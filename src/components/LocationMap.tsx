@@ -9,7 +9,7 @@ const locations = [
   {
     name: "Trends Unisex Saloon",
     address: "184,3rd cross, Link Rd, Malleshwaram, Bengaluru, Karnataka 560003",
-    phone: "+918923477324",
+    phone: "+91 9071331124",
     hours: "Mon-Sat: 9AM-8PM, Sun: 10AM-6PM",
     coordinates: [12.995784605395825, 77.57368586724279] as LatLngTuple,
   },
@@ -17,7 +17,7 @@ const locations = [
     name: "Trends Unisex Saloon",
     address:
       "483, 1st Stage, 6th Phase, 60 Feet Road WOC Road, Rajajinagar, (opp to Reliance Fresh Mart), Bengaluru",
-    phone: "+918923477324",
+    phone: "+91 8123328824",
     hours: "Mon-Sat: 9AM-8PM, Sun: 10AM-6PM",
     coordinates: [12.987444307249396, 77.54460931117136] as LatLngTuple,
   },
@@ -25,7 +25,7 @@ const locations = [
     name: "Trends Unisex Saloon",
     address:
       "Near Atria Institute of Technology, R.T Nagar, Hebbala, Bengaluru, Karnataka 560024",
-    phone: "+918923477324",
+    phone: "+91 6362856410",
     hours: "Mon-Sat: 9AM-8PM, Sun: 10AM-6PM",
     coordinates: [13.033676840844054, 77.5890606914712] as LatLngTuple,
   },
