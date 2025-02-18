@@ -1,3 +1,4 @@
+
 import {
   Carousel,
   CarouselContent,
@@ -9,30 +10,32 @@ import { motion } from "framer-motion";
 
 const offers = [
   {
-    title: "Ultimate Smoothening",
-    description: "L'OREAL XTENSO or SCHWARZKOPF",
-    features: ["POST WASH", "HAIR CUT", "OLAPLEX HAIR SPA COMPLEMENTARY"],
-    price: "₹6,000",
-    image: "/lovable-uploads/efe30971-b2b4-4b79-8c0c-0661a081fc1e.png"
+    title: "Premium Styling Experience",
+    description: "Experience luxury styling with our expert team",
+    features: ["Modern Equipment", "Professional Staff", "Luxurious Ambiance"],
+    price: "Starting from ₹499",
+    image: "/lovable-uploads/4c8fa5a2-d105-4e57-9e8f-76940f1a4d52.png"
   },
   {
-    title: "Hair Botox",
-    description: "MK or COPACABANA HAIR SMOOTHENING",
-    features: ["FIXED PRICE EVERY HAIR LENGTH", "OLAPLEX HAIR SPA", "HAIR CUT"],
-    price: "₹7,000",
-    image: "/lovable-uploads/2f381dc8-c1bd-4599-b64a-21b65d1be8b3.png"
+    title: "Elegant Salon Interior",
+    description: "Perfectly designed space for your comfort",
+    features: ["Marble Interiors", "LED Mirrors", "Premium Chairs"],
+    price: "Visit Us Today",
+    image: "/lovable-uploads/63222189-68c0-4207-8339-7278ccceb239.png"
   },
   {
-    title: "Mix & Match",
-    description: "Makeover Package",
-    features: [
-      "Full arms Rica waxing",
-      "Face clean-up",
-      "Hair spa",
-      "Face threading"
-    ],
-    price: "₹2,500",
-    image: "/lovable-uploads/ccce83e8-1602-4f81-8ddc-a87a2dc11d4e.png"
+    title: "Modern Salon Experience",
+    description: "State-of-the-art facilities for the best care",
+    features: ["Latest Equipment", "Trained Professionals", "Premium Products"],
+    price: "Book Now",
+    image: "/lovable-uploads/a6a8280e-065a-4e36-9c48-59bc08e15848.png"
+  },
+  {
+    title: "The Trends Unisex Salon",
+    description: "Your destination for complete beauty care",
+    features: ["L'OREAL Products", "Professional Services", "Affordable Prices"],
+    price: "Visit Us Today",
+    image: "/lovable-uploads/54f91a2c-0856-4f75-99af-01609e950736.png"
   }
 ];
 
