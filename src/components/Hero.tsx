@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 
 const heroImages = [
   {
-    url: "/lovable-uploads/b3ba3ee8-bc91-4435-a5ec-7e064c5416d0.png",
-    alt: "Modern salon interior with elegant arched mirrors and wood accents"
+    url: "/lovable-uploads/f6c18619-0381-4a22-a335-de7ac7add07a.png",
+    alt: "Modern salon interior with LED-lit mirrors and balloon decorations"
   },
   {
-    url: "/lovable-uploads/4b5da105-2cc3-46b2-a5ed-d95e263a3c1a.png",
-    alt: "Luxury salon with marble floors and pendant lighting"
+    url: "/lovable-uploads/f6c1e5cf-1c7f-4c38-8c1c-5bf4f6b0ee80.png",
+    alt: "Elegant salon space with marble walls and premium styling chairs"
   },
   {
     url: "/lovable-uploads/374ad3e9-2987-40aa-9ba5-d2dc2ed40a0c.png",
