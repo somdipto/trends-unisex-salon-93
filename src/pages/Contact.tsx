@@ -73,7 +73,7 @@ const Contact = () => {
               <h3 className="text-xl font-semibold mb-2">Contact Info</h3>
               <div className="space-y-2 text-gray-600">
                 <p>Email: trendsunisex@gmail.com</p>
-                <p>Phone: (555) 123-4567</p>
+                <p>Phone: +91 9071331124</p>
               </div>
             </div>
           </motion.div>

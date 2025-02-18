@@ -57,15 +57,13 @@ export default function Footer() {
             <ul className="space-y-2 text-gray-800">
               <li>
                 <a href={`tel:+917633894003`} className="hover:text-black transition">
-                  Phone: +91 7633 894 003
+                  Phone: +91 9071331124
                 </a>
               </li>
               <li>
 
-                <a href="mailto:trendsUnisex@gmail.com" className="hover:text-white transition">
-                  Email: TrendsUnisex@gmail.com
-
-
+                <a href="mailto:trendsUnisex@gmail.com" className="hover:text-blue transition">
+                  Email:TrendsUnisexsallon8@gmail.com
                 </a>
               </li>
             </ul>

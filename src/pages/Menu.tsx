@@ -156,6 +156,18 @@ const Menu = () => {
       { name: "ACNE CONTROL", price: "₹5000" },
       { name: "HYDRATING SKIN", price: "₹4500" },
     ],
+    "PEDICURE":[
+      {name: "REGULAR PEDICURE" , price:"₹500"},
+      {name: "MANICURE" , price:"₹500"},
+      {name: "FOOT MASSAGE" , price:"₹500"},
+      {name: "HEELS PEEL TREATMENT" , price: "₹1500"},
+      {name: "AVL PEDICURE SPA" , price : "1200"},
+      {name: "AVL MANICURE SPA" , price: "₹1200"},
+      {name: "BOMBINI ICE-CREAM PEDICURE" , price: "₹3000"},
+      {name: "BOMBINI ICE-CREAM MANICURE" , price: "₹3000"},
+      {name: "ALGA PEDICURE" , price: "₹3000"},
+      {name: "ALGA MANICURE" , price: "₹3000"},
+    ],
   };
 
   return (
