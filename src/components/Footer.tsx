@@ -1,17 +1,15 @@
 import { Facebook, Instagram, Twitter } from 'lucide-react';
 
 export default function Footer() {
-  const whatsappNumber = "+917633894003";
+  const whatsappNumber = "+919071331124";
   const whatsappUrl = `https://wa.me/${whatsappNumber}`;
 
   return (
     <footer className="bg-gray-50 text-gray-900 py-12">
-
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About Us */}
           <div>
-
             <h3 className="text-xl font-semibold mb-4">About Us</h3>
             <p className="text-black leading-relaxed">
             Trends Unisex Salon is a premium hair & beauty salon offering top-quality services across Bangalore.
@@ -53,19 +51,29 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-black">Contact</h3>
+            <h3 className="text-xl font-semibold mb-4 text-black">Branch Contacts</h3>
             <ul className="space-y-2 text-gray-800">
               <li>
-                <a href={`tel:+917633894003`} className="hover:text-black transition">
-                  Phone: +91 7633 894 003
+                <p className="font-medium">Malleshwaram:</p>
+                <a href="tel:+919071331124" className="hover:text-black transition">
+                  +91 90713 31124
                 </a>
               </li>
               <li>
-
-                <a href="mailto:trendsUnisex@gmail.com" className="hover:text-white transition">
+                <p className="font-medium">Rajajinagar:</p>
+                <a href="tel:+918123328824" className="hover:text-black transition">
+                  +91 81233 28824
+                </a>
+              </li>
+              <li>
+                <p className="font-medium">Hebbal:</p>
+                <a href="tel:+916362856410" className="hover:text-black transition">
+                  +91 63628 56410
+                </a>
+              </li>
+              <li>
+                <a href="mailto:trendsUnisex@gmail.com" className="hover:text-black transition">
                   Email: TrendsUnisex@gmail.com
-
-
                 </a>
               </li>
             </ul>
@@ -105,5 +113,4 @@ export default function Footer() {
       </div>
     </footer>
   );
-
 }

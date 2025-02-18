@@ -23,7 +23,7 @@ const heroImages = [
 
 const Hero = () => {
   const [currentImage, setCurrentImage] = useState(0);
-  const whatsappNumber = "+917633894003";
+  const whatsappNumber = "+919071331124";
   const whatsappUrl = `https://wa.me/${whatsappNumber}`;
 
   useEffect(() => {
