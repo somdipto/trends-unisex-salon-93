@@ -1,72 +1,125 @@
+
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 const offers = [
   {
-    title: "Basic",
-    description: "Perfect for those starting their journey with us. Includes essential hair care services.",
-    price: "₹999",
-    features: [
-      "Basic haircut",
-      "Hair wash",
-      "Basic styling",
-      "10% off on products"
-    ],
-    image: "https://images.unsplash.com/photo-1562322140-8baeececf3df?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+    id: 1,
+    title: "Mix & Match",
+    price: "₹2499",
+    image: "/lovable-uploads/b5ea46d1-7f1e-4d52-9bea-f87c5ebe869a.png"
   },
   {
-    title: "Intermediate",
-    description: "Enhanced package with premium services for a complete transformation.",
-    price: "₹1,999",
-    features: [
-      "Premium haircut",
-      "Deep conditioning",
-      "Advanced styling",
-      "20% off on products",
-    ],
+    id: 2,
+    title: "Balayage",
+    price: "₹3999",
+    image: "/lovable-uploads/9651bd69-8c97-469b-9a0f-dae1ce0c6328.png"
   },
   {
-    title: "Advanced",
-    description: "Our most comprehensive package with exclusive premium services.",
-    price: "₹2,999",
-    features: [
-      "Luxury haircut",
-      "Color treatment",
-      "Keratin treatment",
-      "30% off on products",
-    ],
+    id: 3,
+    title: "Hydra Glow",
+    price: "₹1999",
+    image: "/lovable-uploads/7a27304e-c7da-44d1-8dbc-13700c1fdb66.png"
   },
+  {
+    id: 4,
+    title: "Hair Botox",
+    price: "₹4499",
+    image: "/lovable-uploads/9a2f0fd5-38f8-4965-b51f-220ffb1ad1f8.png"
+  },
+  {
+    id: 5,
+    title: "Classic Smoothening",
+    price: "₹2999",
+    image: "/lovable-uploads/e465a833-ca5f-4b02-9b1b-3fa6e811e03d.png"
+  },
+  {
+    id: 6,
+    title: "Ultimate Smoothening",
+    price: "₹5500",
+    image: "/lovable-uploads/d8f90cd0-77fd-4d78-a4e9-8be45c4a46b1.png"
+  },
+  {
+    id: 7,
+    title: "Gold Smoothening",
+    price: "₹3999",
+    image: "/lovable-uploads/3c08fed0-16c0-4442-88eb-1c05978fe4db.png"
+  }
 ];
 
 const ExclusiveOffers = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % offers.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <div className="py-16 bg-white">
+    <div className="py-16 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-5xl font-serif mb-4">Our Offers</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {offers.map((offer, index) => (
-            <motion.div
-              key={offer.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white p-8 rounded-lg border border-black relative overflow-hidden"
-            >
-              <div className="absolute top-0 left-0 w-full h-1 bg-black" />
-              <h3 className="text-2xl font-serif mb-4 underline decoration-2">{offer.title}</h3>
-              <p className="text-gray-600 mb-4">{offer.description}</p>
-              <p className="text-3xl font-bold mb-6">{offer.price}</p>
-              <ul className="space-y-3">
-                {offer.features.map((feature) => (
-                  <li key={feature} className="flex items-center text-sm">
-                    <span className="mr-2">•</span>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+        <div className="relative h-[600px] w-full perspective-1000">
+          <div className="absolute inset-0 flex items-center justify-center">
+            {offers.map((offer, index) => {
+              const rotation = ((2 * Math.PI) / offers.length) * (index - activeIndex);
+              const zIndex = index === activeIndex ? 10 : 5;
+              const scale = index === activeIndex ? 1 : 0.8;
+              const opacity = index === activeIndex ? 1 : 0.5;
+              const translateX = Math.sin(rotation) * 300;
+              const translateZ = 150 - Math.cos(rotation) * 150;
+
+              return (
+                <motion.div
+                  key={offer.id}
+                  initial={false}
+                  animate={{
+                    x: translateX,
+                    z: translateZ,
+                    scale,
+                    opacity,
+                    rotateY: rotation * (180 / Math.PI),
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    ease: "easeInOut"
+                  }}
+                  style={{
+                    zIndex,
+                    position: "absolute",
+                    transformStyle: "preserve-3d",
+                  }}
+                  className="w-[300px] h-[400px] cursor-pointer"
+                  onClick={() => setActiveIndex(index)}
+                >
+                  <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl transform-style-3d">
+                    <img
+                      src={offer.image}
+                      alt={offer.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="flex justify-center mt-8 space-x-2">
+          {offers.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setActiveIndex(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === activeIndex ? "bg-black" : "bg-gray-300"
+              }`}
+            />
           ))}
         </div>
       </div>
