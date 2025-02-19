@@ -64,50 +64,42 @@ const ExclusiveOffers = () => {
           <h2 className="text-5xl font-serif mb-4">Our Offers</h2>
         </div>
 
-        <div className="relative h-[600px] w-full perspective-1000">
-          <div className="absolute inset-0 flex items-center justify-center">
-            {offers.map((offer, index) => {
-              const rotation = ((2 * Math.PI) / offers.length) * (index - activeIndex);
-              const zIndex = index === activeIndex ? 10 : 5;
-              const scale = index === activeIndex ? 1 : 0.8;
-              const opacity = index === activeIndex ? 1 : 0.5;
-              const translateX = Math.sin(rotation) * 300;
-              const translateZ = 150 - Math.cos(rotation) * 150;
+        <div className="relative h-[500px] w-full overflow-hidden">
+          <div className="absolute inset-0 flex items-center">
+            <div className="flex space-x-8 px-4">
+              {offers.map((offer, index) => {
+                const translateX = -((activeIndex * 400) - (index * 400));
+                const scale = index === activeIndex ? 1 : 0.9;
+                const opacity = index === activeIndex ? 1 : 0.7;
 
-              return (
-                <motion.div
-                  key={offer.id}
-                  initial={false}
-                  animate={{
-                    x: translateX,
-                    z: translateZ,
-                    scale,
-                    opacity,
-                    rotateY: rotation * (180 / Math.PI),
-                  }}
-                  transition={{
-                    duration: 0.5,
-                    ease: "easeInOut"
-                  }}
-                  style={{
-                    zIndex,
-                    position: "absolute",
-                    transformStyle: "preserve-3d",
-                  }}
-                  className="w-[300px] h-[400px] cursor-pointer"
-                  onClick={() => setActiveIndex(index)}
-                >
-                  <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl transform-style-3d">
-                    <img
-                      src={offer.image}
-                      alt={offer.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />
-                  </div>
-                </motion.div>
-              );
-            })}
+                return (
+                  <motion.div
+                    key={offer.id}
+                    initial={false}
+                    animate={{
+                      x: translateX,
+                      scale,
+                      opacity,
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      ease: "easeInOut"
+                    }}
+                    className="flex-shrink-0 cursor-pointer"
+                    onClick={() => setActiveIndex(index)}
+                  >
+                    <div className="relative w-[350px] h-[350px] rounded-2xl overflow-hidden shadow-2xl group">
+                      <img
+                        src={offer.image}
+                        alt={offer.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
