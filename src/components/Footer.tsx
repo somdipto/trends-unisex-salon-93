@@ -1,3 +1,4 @@
+
 import { Facebook, Instagram, Twitter } from 'lucide-react';
 
 export default function Footer() {
@@ -72,8 +73,8 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="mailto:trendsUnisex@gmail.com" className="hover:text-black transition">
-                  Email: TrendsUnisex@gmail.com
+                <a href="mailto:trendsunisexsalon8@gmail.com" className="hover:text-black transition">
+                  Email: trendsunisexsalon8@gmail.com
                 </a>
               </li>
             </ul>

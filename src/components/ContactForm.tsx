@@ -147,11 +147,11 @@ const ContactForm = () => {
             <div className="bg-white/80 backdrop-blur-xl p-6 rounded-lg shadow-lg">
               <div className="flex items-center space-x-4">
                 <div className="bg-black p-3 rounded-full">
-                  <Phone className="text-white" size={24} />
+                  <Mail className="text-white" size={24} />
                 </div>
                 <div>
-                  <h3 className="font-semibold">Phone</h3>
-                  <p className="text-gray-600">+91 63665 47532</p>
+                  <h3 className="font-semibold">Email</h3>
+                  <p className="text-gray-600">trendsunisexsalon8@gmail.com</p>
                 </div>
               </div>
             </div>
@@ -159,11 +159,11 @@ const ContactForm = () => {
             <div className="bg-white/80 backdrop-blur-xl p-6 rounded-lg shadow-lg">
               <div className="flex items-center space-x-4">
                 <div className="bg-black p-3 rounded-full">
-                  <Mail className="text-white" size={24} />
+                  <Phone className="text-white" size={24} />
                 </div>
                 <div>
-                  <h3 className="font-semibold">Email</h3>
-                  <p className="text-gray-600">TrendsUnisex@gmail.com</p>
+                  <h3 className="font-semibold">Phone</h3>
+                  <p className="text-gray-600">+91 90713 31124</p>
                 </div>
               </div>
             </div>

@@ -65,17 +65,17 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="space-y-6"
+          className="space-y-8"
         >
           <motion.h1 
-            className="text-4xl md:text-6xl lg:text-7xl font-libre mb-6 leading-tight"
+            className="text-5xl md:text-7xl lg:text-8xl font-libre mb-6 leading-tight font-bold"
             whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
             Elevate Your Style
           </motion.h1>
           <motion.p 
-            className="text-lg md:text-xl lg:text-2xl mb-8 max-w-2xl mx-auto font-libre"
+            className="text-xl md:text-2xl lg:text-3xl mb-10 max-w-2xl mx-auto font-libre"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
@@ -86,8 +86,8 @@ const Hero = () => {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-white text-black px-8 py-4 rounded-full text-lg font-libre hover:bg-gray-100 transition-all duration-300"
-            whileHover={{ scale: 1.05 }}
+            className="inline-block bg-white/10 backdrop-blur-md text-white px-10 py-5 rounded-full text-xl font-libre border border-white/20 hover:bg-white/20 transition-all duration-300 shadow-xl"
+            whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.2)" }}
             whileTap={{ scale: 0.95 }}
           >
             Book Appointment
