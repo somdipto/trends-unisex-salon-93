@@ -86,11 +86,18 @@ const Hero = () => {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-white/10 backdrop-blur-md text-white px-10 py-5 rounded-full text-xl font-libre border border-white/20 hover:bg-white/20 transition-all duration-300 shadow-xl"
-            whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.2)" }}
-            whileTap={{ scale: 0.95 }}
+            className="inline-block bg-white/10 backdrop-blur-md text-white px-10 py-5 rounded-full text-xl font-libre border border-white/20 transition-all duration-300 shadow-lg hover:shadow-2xl relative overflow-hidden group"
+            style={{
+              background: 'linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))'
+            }}
+            whileHover={{ 
+              y: -4,
+              transition: { duration: 0.2 }
+            }}
+            whileTap={{ y: 0 }}
           >
-            Book Appointment
+            <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <span className="relative z-10">Book Appointment</span>
           </motion.a>
         </motion.div>
       </div>

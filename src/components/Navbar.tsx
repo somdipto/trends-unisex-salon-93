@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -6,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const whatsappNumber = "+917633894003";
+  const whatsappNumber = "+919071331124";
   const whatsappUrl = `https://wa.me/${whatsappNumber}`;
 
   useEffect(() => {
@@ -47,7 +48,7 @@ const Navbar = () => {
               >
                 <Link
                   to={`/${item}`}
-                  className="text-black font-libre hover:text-gray-600 transition-colors capitalize"
+                  className="text-black font-libre hover:text-black transition-transform duration-200"
                 >
                   {item}
                 </Link>
@@ -57,15 +58,15 @@ const Navbar = () => {
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
+              className="relative overflow-hidden group bg-black/80 backdrop-blur-sm text-white px-6 py-2 rounded-full font-libre shadow-lg hover:shadow-xl transition-all duration-300"
               whileHover={{ 
-                scale: 1.05,
-                x: 10,
+                y: -2,
                 transition: { duration: 0.2 }
               }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-black/80 backdrop-blur-sm text-white px-6 py-2 rounded-full hover:bg-black transition-colors font-libre"
+              whileTap={{ y: 0 }}
             >
-              Book now
+              <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <span className="relative z-10">Book now</span>
             </motion.a>
           </div>
 
@@ -98,7 +99,7 @@ const Navbar = () => {
                 >
                   <Link
                     to={`/${item}`}
-                    className="block px-3 py-2 text-black hover:bg-black/5 rounded-md capitalize"
+                    className="block px-3 py-2 text-black hover:translate-x-1 transition-transform duration-200 rounded-md"
                     onClick={() => setIsOpen(false)}
                   >
                     {item}
@@ -109,12 +110,16 @@ const Navbar = () => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full text-center block px-3 py-2 text-white bg-black/80 backdrop-blur-sm rounded-full"
+                className="relative overflow-hidden group w-full text-center block px-3 py-2 text-white bg-black/80 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                whileHover={{ 
+                  y: -2,
+                  transition: { duration: 0.2 }
+                }}
+                whileTap={{ y: 0 }}
                 onClick={() => setIsOpen(false)}
               >
-                Book now
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="relative z-10">Book now</span>
               </motion.a>
             </div>
           </motion.div>
