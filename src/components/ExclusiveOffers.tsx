@@ -1,5 +1,5 @@
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
 const offers = [
@@ -49,13 +49,34 @@ const offers = [
 
 const ExclusiveOffers = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  // Preload images
+  useEffect(() => {
+    const preloadImages = async () => {
+      const imagePromises = offers.map((offer) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = offer.image;
+          img.onload = resolve;
+        });
+      });
+      await Promise.all(imagePromises);
+      setImagesLoaded(true);
+    };
+    preloadImages();
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % offers.length);
-    }, 5000);
+    }, 3000); // 3 seconds per slide
     return () => clearInterval(timer);
   }, []);
+
+  if (!imagesLoaded) {
+    return <div className="h-[600px] flex items-center justify-center">Loading...</div>;
+  }
 
   return (
     <div className="py-16 bg-gradient-to-b from-white to-gray-50">
@@ -64,14 +85,22 @@ const ExclusiveOffers = () => {
           <h2 className="text-5xl font-serif mb-4">Our Offers</h2>
         </div>
 
-        <div className="relative h-[550px] w-full overflow-hidden">
+        <div className="relative h-[600px] w-full overflow-hidden">
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="flex space-x-6 px-4" style={{ transform: `translateX(calc(-${activeIndex * 380}px + 50vw - 190px))`, transition: 'transform 0.5s ease-in-out' }}>
+            <div 
+              className="flex space-x-8" 
+              style={{ 
+                transform: `translateX(calc(-${activeIndex * 420}px + 50vw - 210px))`,
+                transition: 'transform 3s ease-in-out',
+                willChange: 'transform', // Hardware acceleration
+              }}
+            >
               {offers.map((offer, index) => {
                 const isActive = index === activeIndex;
                 const distance = Math.abs(index - activeIndex);
-                const scale = isActive ? 1.2 : Math.max(0.6, 1 - distance * 0.2);
-                const opacity = isActive ? 1 : Math.max(0.2, 1 - distance * 0.4);
+                const scale = isActive ? 1.5 : 0.75;
+                const opacity = isActive ? 1 : 0.4;
+                const blur = isActive ? 0 : 2;
                 const zIndex = isActive ? 10 : 1;
 
                 return (
@@ -82,48 +111,45 @@ const ExclusiveOffers = () => {
                       scale,
                       opacity,
                       zIndex,
-                      y: isActive ? -20 : 0,
+                      filter: `blur(${blur}px)`,
                     }}
                     transition={{
                       duration: 0.5,
                       ease: "easeInOut"
                     }}
-                    className="flex-shrink-0 cursor-pointer"
+                    className="flex-shrink-0 cursor-pointer transform-gpu" // Hardware acceleration
                     onClick={() => setActiveIndex(index)}
                   >
                     <div 
-                      className={`relative w-[350px] h-[350px] rounded-2xl overflow-hidden shadow-2xl group transition-all duration-300 ${
-                        isActive ? 'ring-4 ring-black ring-opacity-50 shadow-xl' : ''
+                      className={`relative w-[400px] h-[400px] rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 ${
+                        isActive ? 'ring-4 ring-black ring-opacity-50 shadow-xl hover:scale-105' : ''
                       }`}
-                      style={{
-                        transform: `scale(${isActive ? 1.1 : 1})`,
-                      }}
                     >
                       <img
                         src={offer.image}
                         alt={offer.title}
+                        loading={isActive ? "eager" : "lazy"}
                         className={`w-full h-full object-cover transition-transform duration-300 ${
                           isActive ? 'scale-105' : 'scale-100'
                         }`}
                         style={{
-                          imageRendering: "crisp-edges",
+                          imageRendering: isActive ? "crisp-edges" : "auto",
+                          transform: `scale(${isActive ? 1.1 : 1})`,
                         }}
                       />
-                      <div 
-                        className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-opacity duration-300 ${
-                          isActive ? 'opacity-0' : 'opacity-90'
-                        }`} 
-                      />
-                      {isActive && (
-                        <motion.div 
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="absolute bottom-0 left-0 right-0 p-4 text-white bg-black/50 backdrop-blur-sm"
-                        >
-                          <h3 className="text-xl font-semibold">{offer.title}</h3>
-                          <p className="text-lg">{offer.price}</p>
-                        </motion.div>
-                      )}
+                      <AnimatePresence>
+                        {isActive && (
+                          <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 20 }}
+                            className="absolute bottom-0 left-0 right-0 p-6 text-white bg-black/50 backdrop-blur-sm"
+                          >
+                            <h3 className="text-2xl font-semibold">{offer.title}</h3>
+                            <p className="text-xl mt-2">{offer.price}</p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                   </motion.div>
                 );
@@ -138,7 +164,7 @@ const ExclusiveOffers = () => {
               key={index}
               onClick={() => setActiveIndex(index)}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === activeIndex ? "bg-black w-6" : "bg-gray-300"
+                index === activeIndex ? "bg-black w-8" : "bg-gray-300"
               }`}
             />
           ))}
