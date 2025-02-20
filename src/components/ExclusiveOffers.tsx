@@ -64,14 +64,15 @@ const ExclusiveOffers = () => {
           <h2 className="text-5xl font-serif mb-4">Our Offers</h2>
         </div>
 
-        <div className="relative h-[450px] w-full overflow-hidden">
+        <div className="relative h-[550px] w-full overflow-hidden">
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="flex space-x-4 px-4" style={{ transform: `translateX(calc(-${activeIndex * 380}px + 50vw - 190px))` }}>
+            <div className="flex space-x-6 px-4" style={{ transform: `translateX(calc(-${activeIndex * 380}px + 50vw - 190px))`, transition: 'transform 0.5s ease-in-out' }}>
               {offers.map((offer, index) => {
                 const isActive = index === activeIndex;
                 const distance = Math.abs(index - activeIndex);
-                const scale = isActive ? 1 : Math.max(0.7, 1 - distance * 0.15);
-                const opacity = isActive ? 1 : Math.max(0.3, 1 - distance * 0.3);
+                const scale = isActive ? 1.2 : Math.max(0.6, 1 - distance * 0.2);
+                const opacity = isActive ? 1 : Math.max(0.2, 1 - distance * 0.4);
+                const zIndex = isActive ? 10 : 1;
 
                 return (
                   <motion.div
@@ -80,6 +81,8 @@ const ExclusiveOffers = () => {
                     animate={{
                       scale,
                       opacity,
+                      zIndex,
+                      y: isActive ? -20 : 0,
                     }}
                     transition={{
                       duration: 0.5,
@@ -88,20 +91,39 @@ const ExclusiveOffers = () => {
                     className="flex-shrink-0 cursor-pointer"
                     onClick={() => setActiveIndex(index)}
                   >
-                    <div className={`relative w-[350px] h-[350px] rounded-2xl overflow-hidden shadow-2xl group transition-all duration-300 ${isActive ? 'ring-4 ring-black ring-opacity-50' : ''}`}>
+                    <div 
+                      className={`relative w-[350px] h-[350px] rounded-2xl overflow-hidden shadow-2xl group transition-all duration-300 ${
+                        isActive ? 'ring-4 ring-black ring-opacity-50 shadow-xl' : ''
+                      }`}
+                      style={{
+                        transform: `scale(${isActive ? 1.1 : 1})`,
+                      }}
+                    >
                       <img
                         src={offer.image}
                         alt={offer.title}
-                        className={`w-full h-full object-cover transition-transform duration-300 ${isActive ? 'scale-105' : 'scale-100'}`}
+                        className={`w-full h-full object-cover transition-transform duration-300 ${
+                          isActive ? 'scale-105' : 'scale-100'
+                        }`}
                         style={{
                           imageRendering: "crisp-edges",
                         }}
                       />
                       <div 
                         className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-opacity duration-300 ${
-                          isActive ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'
+                          isActive ? 'opacity-0' : 'opacity-90'
                         }`} 
                       />
+                      {isActive && (
+                        <motion.div 
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="absolute bottom-0 left-0 right-0 p-4 text-white bg-black/50 backdrop-blur-sm"
+                        >
+                          <h3 className="text-xl font-semibold">{offer.title}</h3>
+                          <p className="text-lg">{offer.price}</p>
+                        </motion.div>
+                      )}
                     </div>
                   </motion.div>
                 );
