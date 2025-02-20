@@ -94,7 +94,7 @@ const ExclusiveOffers = () => {
                         alt={offer.title}
                         className={`w-full h-full object-cover transition-transform duration-300 ${isActive ? 'scale-105' : 'scale-100'}`}
                         style={{
-                          imageRendering: isActive ? 'high-quality' : 'auto',
+                          imageRendering: "crisp-edges",
                         }}
                       />
                       <div 
