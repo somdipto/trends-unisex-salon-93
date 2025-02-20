@@ -1,4 +1,3 @@
-
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
@@ -51,7 +50,6 @@ const ExclusiveOffers = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
-  // Preload images
   useEffect(() => {
     const preloadImages = async () => {
       const imagePromises = offers.map((offer) => {
@@ -70,7 +68,7 @@ const ExclusiveOffers = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % offers.length);
-    }, 3000); // 3 seconds per slide
+    }, 3000);
     return () => clearInterval(timer);
   }, []);
 
@@ -92,13 +90,13 @@ const ExclusiveOffers = () => {
               style={{ 
                 transform: `translateX(calc(-${activeIndex * 420}px + 50vw - 210px))`,
                 transition: 'transform 3s ease-in-out',
-                willChange: 'transform', // Hardware acceleration
+                willChange: 'transform',
               }}
             >
               {offers.map((offer, index) => {
                 const isActive = index === activeIndex;
                 const distance = Math.abs(index - activeIndex);
-                const scale = isActive ? 1.5 : 0.75;
+                const scale = isActive ? 1.2 : 1;
                 const opacity = isActive ? 1 : 0.4;
                 const blur = isActive ? 0 : 2;
                 const zIndex = isActive ? 10 : 1;
@@ -117,24 +115,21 @@ const ExclusiveOffers = () => {
                       duration: 0.5,
                       ease: "easeInOut"
                     }}
-                    className="flex-shrink-0 cursor-pointer transform-gpu" // Hardware acceleration
+                    className="flex-shrink-0 cursor-pointer transform-gpu"
                     onClick={() => setActiveIndex(index)}
                   >
                     <div 
                       className={`relative w-[400px] h-[400px] rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 ${
-                        isActive ? 'ring-4 ring-black ring-opacity-50 shadow-xl hover:scale-105' : ''
+                        isActive ? 'ring-4 ring-black ring-opacity-50 shadow-xl' : ''
                       }`}
                     >
                       <img
                         src={offer.image}
                         alt={offer.title}
                         loading={isActive ? "eager" : "lazy"}
-                        className={`w-full h-full object-cover transition-transform duration-300 ${
-                          isActive ? 'scale-105' : 'scale-100'
-                        }`}
+                        className="w-full h-full object-cover transition-transform duration-300"
                         style={{
                           imageRendering: isActive ? "crisp-edges" : "auto",
-                          transform: `scale(${isActive ? 1.1 : 1})`,
                         }}
                       />
                       <AnimatePresence>
