@@ -59,25 +59,25 @@ const ExclusiveOffers = () => {
 
   return (
     <div className="py-16 bg-gradient-to-b from-white to-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1920px] mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-5xl font-serif mb-4">Our Offers</h2>
         </div>
 
-        <div className="relative h-[500px] w-full overflow-hidden">
-          <div className="absolute inset-0 flex items-center">
-            <div className="flex space-x-8 px-4">
+        <div className="relative h-[450px] w-full overflow-hidden">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="flex space-x-4 px-4" style={{ transform: `translateX(calc(-${activeIndex * 380}px + 50vw - 190px))` }}>
               {offers.map((offer, index) => {
-                const translateX = -((activeIndex * 400) - (index * 400));
-                const scale = index === activeIndex ? 1 : 0.9;
-                const opacity = index === activeIndex ? 1 : 0.7;
+                const isActive = index === activeIndex;
+                const distance = Math.abs(index - activeIndex);
+                const scale = isActive ? 1 : Math.max(0.7, 1 - distance * 0.15);
+                const opacity = isActive ? 1 : Math.max(0.3, 1 - distance * 0.3);
 
                 return (
                   <motion.div
                     key={offer.id}
                     initial={false}
                     animate={{
-                      x: translateX,
                       scale,
                       opacity,
                     }}
@@ -88,13 +88,20 @@ const ExclusiveOffers = () => {
                     className="flex-shrink-0 cursor-pointer"
                     onClick={() => setActiveIndex(index)}
                   >
-                    <div className="relative w-[350px] h-[350px] rounded-2xl overflow-hidden shadow-2xl group">
+                    <div className={`relative w-[350px] h-[350px] rounded-2xl overflow-hidden shadow-2xl group transition-all duration-300 ${isActive ? 'ring-4 ring-black ring-opacity-50' : ''}`}>
                       <img
                         src={offer.image}
                         alt={offer.title}
-                        className="w-full h-full object-cover"
+                        className={`w-full h-full object-cover transition-transform duration-300 ${isActive ? 'scale-105' : 'scale-100'}`}
+                        style={{
+                          imageRendering: isActive ? 'high-quality' : 'auto',
+                        }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div 
+                        className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-opacity duration-300 ${
+                          isActive ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'
+                        }`} 
+                      />
                     </div>
                   </motion.div>
                 );
@@ -108,8 +115,8 @@ const ExclusiveOffers = () => {
             <button
               key={index}
               onClick={() => setActiveIndex(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === activeIndex ? "bg-black" : "bg-gray-300"
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === activeIndex ? "bg-black w-6" : "bg-gray-300"
               }`}
             />
           ))}
