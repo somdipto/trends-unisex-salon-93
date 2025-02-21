@@ -9,29 +9,37 @@ const ExclusiveOffers = () => {
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
   useEffect(() => {
-    const preloadImages = async () => {
-      const imagePromises = offers.map((offer) => {
-        return new Promise((resolve) => {
-          const img = new Image();
-          img.src = offer.image;
-          img.onload = resolve;
-        });
+    const imagePromises = offers.slice(0, 3).map((offer) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = offer.image;
+        img.onload = resolve;
       });
-      await Promise.all(imagePromises);
+    });
+
+    Promise.all(imagePromises).then(() => {
       setImagesLoaded(true);
-    };
-    preloadImages();
+      // Load remaining images after initial render
+      offers.slice(3).forEach((offer) => {
+        const img = new Image();
+        img.src = offer.image;
+      });
+    });
   }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % offers.length);
-    }, 5000); // Changed from 3000 to 5000 for slower transitions
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
   if (!imagesLoaded) {
-    return <div className="h-[600px] flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="h-[600px] flex items-center justify-center">
+        <div className="animate-pulse bg-gray-200 w-[400px] h-[400px] rounded-2xl"></div>
+      </div>
+    );
   }
 
   return (
@@ -70,4 +78,3 @@ const ExclusiveOffers = () => {
 };
 
 export default ExclusiveOffers;
-
