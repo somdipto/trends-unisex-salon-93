@@ -84,111 +84,59 @@ const ExclusiveOffers = () => {
           <h2 className="text-5xl font-serif mb-4">Our Offers</h2>
         </div>
 
-        <div className="relative h-[600px] w-full overflow-hidden">
-          <div className="absolute inset-0 flex items-center justify-center perspective-[1000px]">
-            <div 
-              className="flex space-x-8" 
-              style={{ 
-                transform: `translateX(calc(-${activeIndex * 420}px + 50vw - 210px))`,
-                transition: 'transform 0.75s cubic-bezier(0.4, 0, 0.2, 1)',
-                willChange: 'transform',
-              }}
-            >
+        <div className="relative h-[500px] w-full overflow-hidden">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="flex items-center justify-center w-full">
               {offers.map((offer, index) => {
-                const isActive = index === activeIndex;
-                const distance = Math.abs(index - activeIndex);
-                const rotateY = (index - activeIndex) * 45;
-                const translateZ = isActive ? 200 : -200 * distance;
-                const opacity = isActive ? 1 : Math.max(0.3, 1 - distance * 0.3);
+                const position = index - activeIndex;
+                const isActive = position === 0;
+                const isVisible = Math.abs(position) <= 1;
+
+                if (!isVisible) return null;
 
                 return (
                   <motion.div
                     key={offer.id}
                     initial={false}
                     animate={{
-                      rotateY: `${rotateY}deg`,
-                      z: translateZ,
-                      opacity,
                       scale: isActive ? 1.1 : 0.8,
+                      x: position * 400,
+                      zIndex: isActive ? 2 : 1,
+                      opacity: isActive ? 1 : 0.5,
                     }}
                     transition={{
-                      duration: 0.75,
-                      ease: [0.4, 0, 0.2, 1],
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 30,
                     }}
-                    style={{
-                      perspective: 1000,
-                      transformStyle: "preserve-3d",
-                    }}
-                    className="flex-shrink-0 cursor-pointer transform-gpu"
+                    className="absolute cursor-pointer"
                     onClick={() => setActiveIndex(index)}
                   >
                     <motion.div 
-                      className={`relative w-[400px] h-[400px] rounded-2xl overflow-hidden shadow-2xl 
-                        ${isActive ? 'ring-4 ring-black ring-opacity-50' : ''}`}
-                      animate={{
-                        rotateZ: isActive ? [0, -2, 2, 0] : 0,
-                      }}
-                      transition={{
-                        duration: 0.5,
-                        repeat: isActive ? Infinity : 0,
-                        repeatType: "reverse",
+                      className={`w-[400px] h-[400px] bg-white rounded-2xl overflow-hidden shadow-2xl
+                        ${isActive ? 'ring-4 ring-black ring-opacity-50' : ''}
+                        transition-shadow duration-300`}
+                      whileHover={{ scale: 1.02 }}
+                      style={{
+                        transformStyle: "preserve-3d",
+                        perspective: "1000px",
                       }}
                     >
-                      <motion.img
-                        src={offer.image}
-                        alt={offer.title}
-                        loading={isActive ? "eager" : "lazy"}
-                        className="w-full h-full object-cover"
-                        animate={{
-                          scale: isActive ? [1, 1.05, 1] : 1,
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          repeatType: "reverse",
-                          ease: "easeInOut",
-                        }}
-                      />
-                      <AnimatePresence>
-                        {isActive && (
-                          <motion.div 
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ 
-                              opacity: 1, 
-                              y: 0,
-                              transition: {
-                                duration: 0.5,
-                                delay: 0.2,
-                              }
-                            }}
-                            exit={{ 
-                              opacity: 0, 
-                              y: 50,
-                              transition: {
-                                duration: 0.3,
-                              }
-                            }}
-                            className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 via-black/50 to-transparent"
-                          >
-                            <motion.h3 
-                              className="text-2xl font-semibold text-white"
-                              initial={{ x: -20 }}
-                              animate={{ x: 0 }}
-                              transition={{ delay: 0.3 }}
-                            >
-                              {offer.title}
-                            </motion.h3>
-                            <motion.p 
-                              className="text-xl mt-2 text-white"
-                              initial={{ x: -20 }}
-                              animate={{ x: 0 }}
-                              transition={{ delay: 0.4 }}
-                            >
-                              {offer.price}
-                            </motion.p>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                      <div className="relative w-full h-full">
+                        <img
+                          src={offer.image}
+                          alt={offer.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 via-black/50 to-transparent">
+                          <h3 className="text-2xl font-semibold text-white mb-2">
+                            {offer.title}
+                          </h3>
+                          <p className="text-xl text-white">
+                            {offer.price}
+                          </p>
+                        </div>
+                      </div>
                     </motion.div>
                   </motion.div>
                 );
