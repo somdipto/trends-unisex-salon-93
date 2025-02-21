@@ -22,3 +22,4 @@ const CarouselDots = ({ total, activeIndex, onDotClick }: CarouselDotsProps) => 
 };
 
 export default CarouselDots;
+

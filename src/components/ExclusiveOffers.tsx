@@ -70,3 +70,4 @@ const ExclusiveOffers = () => {
 };
 
 export default ExclusiveOffers;
+

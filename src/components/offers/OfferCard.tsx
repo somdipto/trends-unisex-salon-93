@@ -63,3 +63,4 @@ const OfferCard = ({ title, price, image, isActive, position, onClick }: OfferCa
 };
 
 export default OfferCard;
+

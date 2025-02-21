@@ -43,3 +43,4 @@ export const offers = [
     image: "/lovable-uploads/3c08fed0-16c0-4442-88eb-1c05978fe4db.png"
   }
 ];
+
