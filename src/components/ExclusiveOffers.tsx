@@ -26,7 +26,7 @@ const ExclusiveOffers = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % offers.length);
-    }, 3000);
+    }, 5000); // Changed from 3000 to 5000 for slower transitions
     return () => clearInterval(timer);
   }, []);
 
