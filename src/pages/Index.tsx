@@ -5,7 +5,6 @@ import ServicesMenu from "@/components/ServicesMenu";
 import ExclusiveOffers from "@/components/ExclusiveOffers";
 import LocationMap from "@/components/LocationMap";
 import Testimonials from "@/components/Testimonials";
-import ContactForm from "@/components/ContactForm";
 import Navbar from "@/components/Navbar";
 import OffersCarousel from "@/components/OffersCarousel";
 import Footer from "@/components/Footer";
@@ -25,7 +24,6 @@ const Index = () => {
         <OffersCarousel />
         <LocationMap />
         <Testimonials />
-        <ContactForm />
         <Footer />
         <WhatsAppButton />
       </div>
