@@ -14,19 +14,21 @@ import FloatingOffer from "@/components/FloatingOffer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
+    <div className="min-h-screen bg-white no-horizontal-scroll">
       <Navbar />
       <Hero />
       <FloatingOffer />
-      <ImageCarousel />
-      <ServicesMenu />
-      <ExclusiveOffers />
-      <OffersCarousel />
-      <LocationMap />
-      <Testimonials />
-      <ContactForm />
-      <Footer />
-      <WhatsAppButton />
+      <div className="max-w-screen overflow-hidden">
+        <ImageCarousel />
+        <ServicesMenu />
+        <ExclusiveOffers />
+        <OffersCarousel />
+        <LocationMap />
+        <Testimonials />
+        <ContactForm />
+        <Footer />
+        <WhatsAppButton />
+      </div>
     </div>
   );
 };

@@ -50,12 +50,20 @@ const OfferCard = ({
 
   if (!isVisible) return null;
 
+  const cardSize = isMobile ? {
+    width: 280,
+    height: 280
+  } : {
+    width: 400,
+    height: 400
+  };
+
   return (
     <motion.div
       initial={false}
       animate={{
         scale: isActive ? 1.1 : 0.8,
-        x: position * (isMobile ? 300 : 400),
+        x: position * (isMobile ? cardSize.width + 20 : cardSize.width),
         zIndex: isActive ? 2 : 1,
         opacity: isActive ? 1 : 0.7
       }}
@@ -64,20 +72,22 @@ const OfferCard = ({
         stiffness: 200,
         damping: 25
       }}
-      className="absolute cursor-pointer"
+      className="absolute cursor-pointer touch-none"
       onClick={onClick}
     >
       <motion.div
-        className="w-[300px] h-[300px] md:w-[400px] md:h-[400px] bg-white rounded-2xl overflow-hidden transition-shadow duration-500"
-        whileHover={{
-          scale: 1.02
-        }}
+        className="overflow-hidden rounded-2xl transition-shadow duration-500"
         style={{
+          width: cardSize.width,
+          height: cardSize.height,
           transformStyle: "preserve-3d",
           perspective: "1000px",
           boxShadow: isActive
             ? `0 20px 25px -5px ${dominantColor}, 0 8px 10px -6px ${dominantColor}`
             : `0 10px 15px -3px ${dominantColor}, 0 4px 6px -4px ${dominantColor}`
+        }}
+        whileHover={{
+          scale: 1.02
         }}
       >
         <div className="relative w-full h-full">
