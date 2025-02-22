@@ -2,9 +2,9 @@
 
 ## Project info
 
-**URL**: https://stylish-salon-website-93.vercel.app/
+**URL**: https://trends-unisex-salon.vercel.app/
 
-**Vercel**: https://stylish-salon-website-93.vercel.app/
+**Vercel**: https://trends-unisex-salon.vercel.app/
 
 **Use your preferred IDE**
 
