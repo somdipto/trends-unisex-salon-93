@@ -1,9 +1,8 @@
-
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { motion } from "framer-motion";
-import { MapPin } from "lucide-react";
+import { MapPin, Instagram } from "lucide-react";
 import type { LatLngTuple } from "leaflet";
 
 const locations = [
@@ -13,22 +12,23 @@ const locations = [
     phone: "+919071331124",
     hours: "Mon-Sat: 9AM-8PM, Sun: 10AM-6PM",
     coordinates: [12.995784605395825, 77.57368586724279] as LatLngTuple,
+    instagram: "https://www.instagram.com/the_trends_salon_malleswaram",
   },
   {
     name: "Trends Unisex Saloon - Rajajinagar",
-    address:
-      "483, 1st Stage, 6th Phase, 60 Feet Road WOC Road, Rajajinagar, (opp to Reliance Fresh Mart), Bengaluru",
+    address: "483, 1st Stage, 6th Phase, 60 Feet Road WOC Road, Rajajinagar, (opp to Reliance Fresh Mart), Bengaluru",
     phone: "+918123328824",
     hours: "Mon-Sat: 9AM-8PM, Sun: 10AM-6PM",
     coordinates: [12.987444307249396, 77.54460931117136] as LatLngTuple,
+    instagram: "https://www.instagram.com/the_trends_salon_rajajinagar",
   },
   {
     name: "Trends Unisex Saloon - Hebbal",
-    address:
-      "Near Atria Institute of Technology, R.T Nagar, Hebbala, Bengaluru, Karnataka 560024",
+    address: "Near Atria Institute of Technology, R.T Nagar, Hebbala, Bengaluru, Karnataka 560024",
     phone: "+916362856410",
     hours: "Mon-Sat: 9AM-8PM, Sun: 10AM-6PM",
     coordinates: [13.033676840844054, 77.5890606914712] as LatLngTuple,
+    instagram: "https://www.instagram.com/the_trends_salon_hebbal",
   },
 ];
 
@@ -103,7 +103,7 @@ const LocationMap = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.2 }}
-                className="bg-white p-4 md:p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100"
+                className="bg-white p-4 md:p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 relative"
               >
                 <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3">{location.name}</h3>
                 <div className="space-y-2 text-sm md:text-base text-gray-600">
@@ -111,15 +111,27 @@ const LocationMap = () => {
                   <p className="font-medium">{location.phone}</p>
                   <p>{location.hours}</p>
                 </div>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${location.coordinates[0]},${location.coordinates[1]}`, '_blank')}
-                  className="mt-3 md:mt-4 inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-gray-100 to-gray-200 text-black rounded-full transition-all duration-250 hover:from-black hover:to-gray-800 hover:text-white shadow-sm hover:shadow-md"
-                >
-                  <MapPin className="w-4 h-4" />
-                  Get Directions
-                </motion.button>
+                <div className="flex gap-2 mt-3 md:mt-4">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${location.coordinates[0]},${location.coordinates[1]}`, '_blank')}
+                    className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-gray-100 to-gray-200 text-black rounded-full transition-all duration-250 hover:from-black hover:to-gray-800 hover:text-white shadow-sm hover:shadow-md"
+                  >
+                    <MapPin className="w-4 h-4" />
+                    Get Directions
+                  </motion.button>
+                  <motion.a
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    href={location.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute bottom-4 right-4 p-2 text-black hover:text-pink-600 transition-colors duration-200"
+                  >
+                    <Instagram className="w-6 h-6" />
+                  </motion.a>
+                </div>
               </motion.div>
             ))}
           </div>

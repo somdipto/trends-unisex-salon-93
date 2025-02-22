@@ -14,11 +14,11 @@ import FloatingOffer from "@/components/FloatingOffer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-white no-horizontal-scroll">
+    <div className="min-h-screen bg-white relative">
       <Navbar />
       <Hero />
       <FloatingOffer />
-      <div className="max-w-screen overflow-hidden">
+      <div className="relative z-0">
         <ImageCarousel />
         <ServicesMenu />
         <ExclusiveOffers />
