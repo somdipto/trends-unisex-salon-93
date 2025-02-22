@@ -1,3 +1,4 @@
+
 import Hero from "@/components/Hero";
 import ImageCarousel from "@/components/ImageCarousel";
 import ServicesMenu from "@/components/ServicesMenu";
@@ -13,7 +14,7 @@ import FloatingOffer from "@/components/FloatingOffer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       <Navbar />
       <Hero />
       <FloatingOffer />
