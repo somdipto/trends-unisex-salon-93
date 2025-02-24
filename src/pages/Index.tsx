@@ -2,11 +2,9 @@
 import Hero from "@/components/Hero";
 import ImageCarousel from "@/components/ImageCarousel";
 import ServicesMenu from "@/components/ServicesMenu";
-import ExclusiveOffers from "@/components/ExclusiveOffers";
 import LocationMap from "@/components/LocationMap";
 import Testimonials from "@/components/Testimonials";
 import Navbar from "@/components/Navbar";
-import OffersCarousel from "@/components/OffersCarousel";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import FloatingOffer from "@/components/FloatingOffer";
@@ -20,8 +18,6 @@ const Index = () => {
       <div className="relative z-0">
         <ImageCarousel />
         <ServicesMenu />
-        <ExclusiveOffers />
-        <OffersCarousel />
         <LocationMap />
         <Testimonials />
         <Footer />

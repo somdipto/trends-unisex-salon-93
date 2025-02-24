@@ -1,8 +1,9 @@
+
 import { motion } from "framer-motion";
 
 const FloatingOffer = () => {
   return (
-    <div className="floating-offer mt-16 overflow-hidden bg-gray-50">
+    <div className="floating-offer mt-16 overflow-hidden bg-black text-white">
       <motion.div
         initial={{ x: "100%" }}
         animate={{ x: "-100%" }}
@@ -11,9 +12,9 @@ const FloatingOffer = () => {
           repeat: Infinity,
           ease: "linear",
         }}
-        className="whitespace-nowrap font-libre text-xl md:text-2xl text-white py-6"
+        className="whitespace-nowrap font-libre text-lg py-4"
       >
-        🎉 Special Offer: Get 20% off on all services this week! Book your appointment now on WhatsApp
+        20% off on all services • Book your appointment now
       </motion.div>
     </div>
   );
