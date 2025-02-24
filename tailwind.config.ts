@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,6 +19,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        libre: ['Libre Baskerville', 'serif'],
+      },
       borderRadius: {
         lg: "1rem",
         md: "0.75rem",
@@ -49,11 +53,6 @@ export default {
           DEFAULT: "#333333",
           foreground: "#FFFFFF",
         },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
         "fade-up": {
