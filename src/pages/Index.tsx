@@ -17,8 +17,7 @@ const Index = () => {
       <Navbar />
       <Hero />
       <FloatingOffer />
-      <div className="relative z-0">
-        <ImageCarousel />
+      <div className="relative z-0 space-y-16">
         <ServicesMenu />
         <ExclusiveOffers />
         <OffersCarousel />

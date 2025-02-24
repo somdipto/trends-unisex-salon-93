@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 import {
@@ -32,9 +33,9 @@ const services = [
 const ServicesMenu = () => {
   return (
     <div className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-5xl font-serif mb-4">Our Services</h2>
+          <h2 className="text-4xl font-serif mb-4">Services</h2>
         </div>
 
         <Carousel className="w-full max-w-5xl mx-auto">
@@ -45,20 +46,23 @@ const ServicesMenu = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-200 m-2"
+                  className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 m-2 group"
                 >
                   <div className="aspect-[4/3] relative overflow-hidden">
                     <img
                       src={service.image}
                       alt={service.name}
-                      className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-serif mb-2">{service.name}</h3>
-                    <p className="text-lg font-bold mb-2">{service.price}</p>
-                    <p className="text-gray-600 mb-6">{service.description}</p>
-                    <Button variant="outline" className="w-full hover:bg-black hover:text-white transition-colors">
+                    <h3 className="text-lg font-serif mb-2">{service.name}</h3>
+                    <p className="text-lg font-light mb-2">{service.price}</p>
+                    <p className="text-gray-600 text-sm mb-6">{service.description}</p>
+                    <Button 
+                      variant="outline" 
+                      className="w-full hover:bg-black hover:text-white transition-colors duration-300"
+                    >
                       Book now
                     </Button>
                   </div>
