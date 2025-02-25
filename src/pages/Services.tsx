@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import { Card } from "@/components/ui/card";
@@ -94,8 +93,10 @@ const Services = () => {
     ],
   };
 
-  const handleBooking = () => {
-    window.open('https://wa.me/917633894003', '_blank');
+  const handleBooking = (packageName: string, price: number) => {
+    const message = `Hi, I would like to book the ${packageName} for ₹${price}. Please let me know the available time slots.`;
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/917633894003?text=${encodedMessage}`, '_blank');
   };
 
   return (
@@ -146,7 +147,7 @@ const Services = () => {
                   </ul>
                 </div>
                 <button
-                  onClick={handleBooking}
+                  onClick={() => handleBooking(service.name, service.discountedPrice)}
                   className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition-colors"
                 >
                   Book Now
@@ -183,7 +184,7 @@ const Services = () => {
               ))}
             </div>
             <button
-              onClick={handleBooking}
+              onClick={() => handleBooking(makeoverPackage.name, makeoverPackage.discountedPrice)}
               className="bg-white text-black px-8 py-3 rounded-md hover:bg-gray-100 transition-colors"
             >
               Book Complete Makeover
@@ -202,7 +203,7 @@ const Services = () => {
             Choose any 5 services and get an additional 20% off the package price
           </p>
           <button
-            onClick={handleBooking}
+            onClick={() => handleBooking("Mix & Match Package", 0)}
             className="bg-black text-white px-8 py-3 rounded-md hover:bg-gray-800 transition-colors"
           >
             Create Your Package
