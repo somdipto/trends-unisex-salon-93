@@ -1,60 +1,105 @@
 
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
-import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 const Services = () => {
   const services = [
     {
-      name: "Regular Cut & Style",
-      originalPrice: 1499,
+      name: "Basic Package",
+      originalPrice: 1000,
+      discountedPrice: 699,
+      services: [
+        { name: "Hair Cut", price: 200 },
+        { name: "Beard", price: 100 },
+        { name: "De-tan", price: 600 },
+        { name: "Wash", price: 100 },
+      ],
+    },
+    {
+      name: "Premium Package",
+      originalPrice: 1400,
       discountedPrice: 999,
-      image: "/lovable-uploads/efe30971-b2b4-4b79-8c0c-0661a081fc1e.png",
-      details: [
-        "Professional haircut",
-        "Basic styling",
-        "Hair wash",
-        "Style consultation",
+      services: [
+        { name: "Hair Cut", price: 200 },
+        { name: "Beard", price: 100 },
+        { name: "De-tan", price: 600 },
+        { name: "Oil Massage", price: 400 },
+        { name: "Hair Wash", price: 100 },
       ],
-      highlight: false,
     },
     {
-      name: "Premium Hair Makeover",
-      originalPrice: 2499,
-      discountedPrice: 1499,
-      image: "/lovable-uploads/2f381dc8-c1bd-4599-b64a-21b65d1be8b3.png",
-      details: [
-        "Advanced haircut",
-        "Premium styling",
-        "Deep conditioning",
-        "Color consultation",
-        "Hair treatment",
+      name: "Spa Package",
+      originalPrice: 2400,
+      discountedPrice: 1785,
+      services: [
+        { name: "Hair Cut", price: 200 },
+        { name: "Beard", price: 100 },
+        { name: "Hair Spa", price: 1000 },
+        { name: "Clean-up", price: 800 },
       ],
-      highlight: true,
     },
     {
-      name: "Deluxe Full Service",
-      originalPrice: 3999,
+      name: "Color Package",
+      originalPrice: 2800,
+      discountedPrice: 2200,
+      services: [
+        { name: "Hair Cut", price: 200 },
+        { name: "Color", price: 700 },
+        { name: "Beard", price: 100 },
+        { name: "De-tan", price: 600 },
+        { name: "Facial", price: 1000 },
+      ],
+    },
+    {
+      name: "Luxury Package",
+      originalPrice: 5900,
+      discountedPrice: 3770,
+      services: [
+        { name: "Lotus Facial", price: 3500 },
+        { name: "Hair Cut", price: 700 },
+        { name: "Face De-tan", price: 600 },
+        { name: "Eyebrow + Upper Lip", price: 80 },
+        { name: "Oil Massage", price: 500 },
+      ],
+    },
+    {
+      name: "Wellness Package",
+      originalPrice: 2400,
       discountedPrice: 1999,
-      image: "/lovable-uploads/ccce83e8-1602-4f81-8ddc-a87a2dc11d4e.png",
-      details: [
-        "Premium haircut",
-        "Complex styling",
-        "Color services",
-        "Treatment therapy",
-        "Style consultation",
-        "Hair care kit",
+      services: [
+        { name: "Hair Cut", price: 200 },
+        { name: "Beard", price: 100 },
+        { name: "Manicure", price: 500 },
+        { name: "Pedicure", price: 1200 },
+        { name: "Oil Massage", price: 400 },
       ],
-      highlight: false,
     },
   ];
+
+  const makeoverPackage = {
+    name: "Complete Makeover Package",
+    originalPrice: 5000,
+    discountedPrice: 2499,
+    services: [
+      "Full Arms Rica Waxing",
+      "Full Legs Rica Waxing",
+      "Under Arms Rica Waxing",
+      "Face Clean-up",
+      "Face De-tan",
+      "Neck De-tan",
+      "Hair Spa",
+      "Hair Cut",
+      "Face Threading",
+    ],
+  };
 
   const handleBooking = () => {
     window.open('https://wa.me/917633894003', '_blank');
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
       <div className="pt-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <motion.div
@@ -63,36 +108,24 @@ const Services = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h1 className="text-5xl font-libre mb-4">Our Services</h1>
+          <h1 className="text-4xl font-libre mb-4">Our Services</h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Experience premium hair care with our expertly crafted service packages
+            Choose from our carefully curated service packages
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {services.map((service, index) => (
             <motion.div
               key={service.name}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={`bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 ${
-                service.highlight ? 'ring-2 ring-purple-500' : ''
-              }`}
             >
-              <div className="aspect-square mb-4 overflow-hidden">
-                <motion.img
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.3 }}
-                  src={service.image}
-                  alt={service.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-libre mb-2">{service.name}</h3>
+              <Card className="p-6 h-full flex flex-col">
+                <h3 className="text-xl font-libre mb-3">{service.name}</h3>
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="text-2xl font-bold">
+                  <span className="text-2xl font-bold text-green-600">
                     ₹{service.discountedPrice}
                   </span>
                   <span className="text-gray-500 line-through text-sm">
@@ -102,27 +135,23 @@ const Services = () => {
                     Save ₹{service.originalPrice - service.discountedPrice}
                   </span>
                 </div>
-                <ul className="space-y-2 mb-6">
-                  {service.details.map((detail) => (
-                    <motion.li
-                      key={detail}
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      className="text-sm text-gray-600 flex items-center"
-                    >
-                      <span className="mr-2">•</span> {detail}
-                    </motion.li>
-                  ))}
-                </ul>
-                <motion.button
-                  whileHover={{ scale: 1.02, backgroundColor: "#FFFFFF", color: "#000000" }}
-                  whileTap={{ scale: 0.98 }}
+                <div className="flex-grow">
+                  <ul className="space-y-2 mb-4">
+                    {service.services.map((item) => (
+                      <li key={item.name} className="flex justify-between text-sm">
+                        <span>{item.name}</span>
+                        <span className="text-gray-600">₹{item.price}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <button
                   onClick={handleBooking}
-                  className="w-full bg-black text-white py-3 px-6 rounded-md transition-all duration-300 border border-black hover:bg-white hover:text-black"
+                  className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition-colors"
                 >
-                  Book now
-                </motion.button>
-              </div>
+                  Book Now
+                </button>
+              </Card>
             </motion.div>
           ))}
         </div>
@@ -131,29 +160,53 @@ const Services = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="text-center py-16 bg-black text-white rounded-lg relative overflow-hidden"
-          style={{
-            backgroundImage: "url('/lovable-uploads/f6e63a05-16bc-41c2-be4b-08f24de54830.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+          className="bg-black text-white rounded-lg p-8 mb-12"
         >
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
-          <div className="relative z-10 max-w-3xl mx-auto">
-            <h2 className="text-4xl font-libre mb-4">Mix & Match Services</h2>
-            <p className="mb-8 text-lg">
-              Choose any 5 services and get an additional 20% off the package price.
-              Contact us to create your custom package.
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.05, backgroundColor: "#FFFFFF", color: "#000000" }}
-              whileTap={{ scale: 0.98 }}
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl font-libre mb-6">{makeoverPackage.name}</h2>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <span className="text-3xl font-bold text-green-400">
+                ₹{makeoverPackage.discountedPrice}
+              </span>
+              <span className="text-gray-400 line-through text-xl">
+                ₹{makeoverPackage.originalPrice}
+              </span>
+              <span className="text-green-400">
+                Save ₹{makeoverPackage.originalPrice - makeoverPackage.discountedPrice}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+              {makeoverPackage.services.map((service) => (
+                <div key={service} className="text-sm">
+                  • {service}
+                </div>
+              ))}
+            </div>
+            <button
               onClick={handleBooking}
-              className="bg-transparent text-white border-2 border-white py-3 px-8 rounded-md hover:bg-white hover:text-black transition-all duration-300"
+              className="bg-white text-black px-8 py-3 rounded-md hover:bg-gray-100 transition-colors"
             >
-              Create Your Package
-            </motion.button>
+              Book Complete Makeover
+            </button>
           </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="text-center py-12 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg"
+        >
+          <h2 className="text-3xl font-libre mb-4">Mix & Match Services</h2>
+          <p className="text-gray-600 mb-6">
+            Choose any 5 services and get an additional 20% off the package price
+          </p>
+          <button
+            onClick={handleBooking}
+            className="bg-black text-white px-8 py-3 rounded-md hover:bg-gray-800 transition-colors"
+          >
+            Create Your Package
+          </button>
         </motion.div>
       </div>
     </div>
