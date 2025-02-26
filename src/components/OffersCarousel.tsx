@@ -19,6 +19,7 @@ const offers: Offer[] = [
     image: "/lovable-uploads/4c8fa5a2-d105-4e57-9e8f-76940f1a4d52.png"
   },
   {
+    id: "2",
     title: "Elegant Salon Interior",
     description: "Perfectly designed space for your comfort",
     features: ["Marble Interiors", "LED Mirrors", "Premium Chairs"],
@@ -26,6 +27,7 @@ const offers: Offer[] = [
     image: "/lovable-uploads/63222189-68c0-4207-8339-7278ccceb239.png"
   },
   {
+    id: "3",
     title: "Modern Salon Experience",
     description: "State-of-the-art facilities for the best care",
     features: ["Latest Equipment", "Trained Professionals", "Premium Products"],
@@ -33,6 +35,7 @@ const offers: Offer[] = [
     image: "/lovable-uploads/a6a8280e-065a-4e36-9c48-59bc08e15848.png"
   },
   {
+    id: "4",
     title: "The Trends Unisex Salon",
     description: "Your destination for complete beauty care",
     features: ["L'OREAL Products", "Professional Services", "Affordable Prices"],
