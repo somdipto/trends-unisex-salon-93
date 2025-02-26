@@ -27,10 +27,24 @@ const heroImages = [
 
 const Hero = () => {
   const [currentImage, setCurrentImage] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const whatsappNumber = "+919071331124";
   const whatsappUrl = `https://wa.me/${whatsappNumber}`;
 
   useEffect(() => {
+    // Preload all images
+    Promise.all(
+      heroImages.map((image) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = image.url;
+          img.onload = resolve;
+        });
+      })
+    ).then(() => {
+      setImagesLoaded(true);
+    });
+
     const timer = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % heroImages.length);
     }, 5000);
@@ -61,9 +75,11 @@ const Hero = () => {
               style={{
                 objectPosition: image.position
               }}
+              loading="eager"
+              fetchPriority="high"
             />
             <div 
-              className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50 backdrop-blur-[1px]"
+              className="absolute inset-0"
               style={{
                 background: "linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.5) 100%)"
               }}
@@ -79,13 +95,9 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="space-y-6 md:space-y-8"
         >
-          <motion.h1 
-            className="text-4xl md:text-6xl lg:text-7xl font-libre mb-4 md:mb-6 leading-tight font-bold"
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-libre mb-4 md:mb-6 leading-tight font-bold">
             Elevate Your Style
-          </motion.h1>
+          </h1>
           <motion.p 
             className="text-lg md:text-xl lg:text-2xl mb-8 md:mb-10 max-w-2xl mx-auto font-libre"
             initial={{ opacity: 0 }}
