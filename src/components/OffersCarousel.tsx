@@ -6,8 +6,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Offer } from "@/types/services";
+import { useEffect, useState } from "react";
 
 const offers: Offer[] = [
   {
@@ -45,6 +46,39 @@ const offers: Offer[] = [
 ];
 
 const OffersCarousel = () => {
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  useEffect(() => {
+    // Preload all images
+    const preloadImages = async () => {
+      const imagePromises = offers.map((offer) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = offer.image;
+          img.onload = resolve;
+        });
+      });
+
+      await Promise.all(imagePromises);
+      setImagesLoaded(true);
+    };
+
+    preloadImages();
+  }, []);
+
+  if (!imagesLoaded) {
+    return (
+      <div className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-5xl font-serif mb-4">Exclusive Offers</h2>
+          </div>
+          <div className="animate-pulse w-full max-w-5xl mx-auto aspect-[16/9] bg-gray-200 rounded-lg"></div>
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <div className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -52,36 +86,50 @@ const OffersCarousel = () => {
           <h2 className="text-5xl font-serif mb-4">Exclusive Offers</h2>
         </div>
         
-        <Carousel className="w-full max-w-5xl mx-auto">
+        <Carousel 
+          className="w-full max-w-5xl mx-auto"
+          opts={{
+            align: "start",
+            loop: true,
+            skipSnaps: false,
+            duration: 20, // Faster transition duration
+            startIndex: 0
+          }}
+        >
           <CarouselContent>
-            {offers.map((offer, index) => (
-              <CarouselItem key={index}>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="relative overflow-hidden rounded-lg"
-                >
-                  <img
-                    src={offer.image}
-                    alt={offer.title}
-                    className="w-full aspect-[16/9] object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
-                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                      <h3 className="text-3xl font-bold mb-2">{offer.title}</h3>
-                      <p className="text-lg mb-2">{offer.description}</p>
-                      <ul className="mb-4">
-                        {offer.features.map((feature, idx) => (
-                          <li key={idx} className="text-sm">• {feature}</li>
-                        ))}
-                      </ul>
-                      <p className="text-2xl font-bold">{offer.price}</p>
+            <AnimatePresence mode="wait">
+              {offers.map((offer, index) => (
+                <CarouselItem key={offer.id}>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="relative overflow-hidden rounded-lg"
+                  >
+                    <img
+                      src={offer.image}
+                      alt={offer.title}
+                      className="w-full aspect-[16/9] object-cover"
+                      loading="eager"
+                      decoding="async"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
+                      <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 className="text-3xl font-bold mb-2">{offer.title}</h3>
+                        <p className="text-lg mb-2">{offer.description}</p>
+                        <ul className="mb-4">
+                          {offer.features.map((feature, idx) => (
+                            <li key={idx} className="text-sm">• {feature}</li>
+                          ))}
+                        </ul>
+                        <p className="text-2xl font-bold">{offer.price}</p>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              </CarouselItem>
-            ))}
+                  </motion.div>
+                </CarouselItem>
+              ))}
+            </AnimatePresence>
           </CarouselContent>
           <CarouselPrevious className="left-4" />
           <CarouselNext className="right-4" />
