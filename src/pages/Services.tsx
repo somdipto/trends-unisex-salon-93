@@ -2,9 +2,7 @@
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import { ServiceCard } from "@/components/services/ServiceCard";
-import { MakeoverPackage } from "@/components/services/MakeoverPackage";
-import { CustomPackage } from "@/components/services/CustomPackage";
-import { services, makeoverPackage } from "@/data/servicesData";
+import { services } from "@/data/servicesData";
 
 const Services = () => {
   return (
@@ -28,13 +26,9 @@ const Services = () => {
             <ServiceCard key={service.name} service={service} index={index} />
           ))}
         </div>
-
-        <MakeoverPackage makeoverPackage={makeoverPackage} />
-        <CustomPackage />
       </div>
     </div>
   );
 };
 
 export default Services;
-

@@ -23,13 +23,13 @@ export const ServiceCard = ({ service, index }: ServiceCardProps) => {
       <Card className="p-6 h-full flex flex-col">
         <h3 className="text-xl font-libre mb-3">{service.name}</h3>
         <div className="flex items-center gap-2 mb-4">
-          <span className="text-2xl font-bold text-green-600">
+          <span className="text-2xl font-bold text-blue-600">
             ₹{service.discountedPrice}
           </span>
           <span className="text-gray-500 line-through text-sm">
             ₹{service.originalPrice}
           </span>
-          <span className="text-green-600 text-sm">
+          <span className="text-blue-600 text-sm">
             Save ₹{service.originalPrice - service.discountedPrice}
           </span>
         </div>
@@ -53,4 +53,3 @@ export const ServiceCard = ({ service, index }: ServiceCardProps) => {
     </motion.div>
   );
 };
-
