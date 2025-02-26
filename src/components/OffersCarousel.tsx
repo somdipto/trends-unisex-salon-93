@@ -7,9 +7,11 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { motion } from "framer-motion";
+import { Offer } from "@/types/services";
 
-const offers = [
+const offers: Offer[] = [
   {
+    id: "1",
     title: "Premium Styling Experience",
     description: "Experience luxury styling with our expert team",
     features: ["Modern Equipment", "Professional Staff", "Luxurious Ambiance"],
