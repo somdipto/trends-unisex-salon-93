@@ -27,22 +27,14 @@ const heroImages = [
 
 const Hero = () => {
   const [currentImage, setCurrentImage] = useState(0);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
   const whatsappNumber = "+919071331124";
   const whatsappUrl = `https://wa.me/${whatsappNumber}`;
 
   useEffect(() => {
-    // Preload all images
-    Promise.all(
-      heroImages.map((image) => {
-        return new Promise((resolve) => {
-          const img = new Image();
-          img.src = image.url;
-          img.onload = resolve;
-        });
-      })
-    ).then(() => {
-      setImagesLoaded(true);
+    // Preload all images immediately when component mounts
+    heroImages.forEach((image) => {
+      const img = new Image();
+      img.src = image.url;
     });
 
     const timer = setInterval(() => {
@@ -56,13 +48,13 @@ const Hero = () => {
       {heroImages.map((image, index) => (
         <motion.div
           key={image.url}
-          initial={{ opacity: 0 }}
+          initial={false}
           animate={{ 
             opacity: currentImage === index ? 1 : 0,
             scale: currentImage === index ? 1 : 1.1
           }}
           transition={{ 
-            duration: 1.5,
+            duration: 0.8,
             ease: "easeInOut"
           }}
           className="absolute inset-0"
@@ -77,6 +69,7 @@ const Hero = () => {
               }}
               loading="eager"
               fetchPriority="high"
+              decoding="sync"
             />
             <div 
               className="absolute inset-0"
@@ -92,7 +85,7 @@ const Hero = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+          transition={{ duration: 0.8 }}
           className="space-y-6 md:space-y-8"
         >
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-libre mb-4 md:mb-6 leading-tight font-bold">
@@ -102,7 +95,7 @@ const Hero = () => {
             className="text-lg md:text-xl lg:text-2xl mb-8 md:mb-10 max-w-2xl mx-auto font-libre"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
+            transition={{ delay: 0.3 }}
           >
             Experience premium hair care and styling at Trends Unisex Salon
           </motion.p>

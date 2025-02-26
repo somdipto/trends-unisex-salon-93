@@ -50,20 +50,11 @@ const OffersCarousel = () => {
 
   useEffect(() => {
     // Preload all images
-    const preloadImages = async () => {
-      const imagePromises = offers.map((offer) => {
-        return new Promise((resolve) => {
-          const img = new Image();
-          img.src = offer.image;
-          img.onload = resolve;
-        });
-      });
-
-      await Promise.all(imagePromises);
-      setImagesLoaded(true);
-    };
-
-    preloadImages();
+    offers.forEach((offer) => {
+      const img = new Image();
+      img.src = offer.image;
+    });
+    setImagesLoaded(true);
   }, []);
 
   if (!imagesLoaded) {
@@ -92,19 +83,19 @@ const OffersCarousel = () => {
             align: "start",
             loop: true,
             skipSnaps: false,
-            duration: 20, // Faster transition duration
+            duration: 10, // Faster transition duration (reduced from 20)
             startIndex: 0
           }}
         >
           <CarouselContent>
             <AnimatePresence mode="wait">
-              {offers.map((offer, index) => (
+              {offers.map((offer) => (
                 <CarouselItem key={offer.id}>
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.2 }} // Faster animation (reduced from 0.3)
                     className="relative overflow-hidden rounded-lg"
                   >
                     <img
@@ -112,7 +103,7 @@ const OffersCarousel = () => {
                       alt={offer.title}
                       className="w-full aspect-[16/9] object-cover"
                       loading="eager"
-                      decoding="async"
+                      decoding="sync"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
                       <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
