@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 
@@ -39,6 +40,18 @@ const Menu = () => {
       { name: "OLAPLEX TREATMENT", price: "₹3000" },
       { name: "HEAD MASSAGE (20 min)", price: "₹400" },
       { name: "HEAD MASSAGE (WITH HAIR WASH)", price: "₹700" },
+    ],
+    "PEDICURE & MANICURE": [
+      { name: "REGULAR PEDICURE", price: "₹500" },
+      { name: "REGULAR MANICURE", price: "₹500" },
+      { name: "FOOT MASSAGE", price: "₹500" },
+      { name: "HEELS PEEL TREATMENT", price: "₹1500" },
+      { name: "AVL PEDICURE SPA", price: "₹1200" },
+      { name: "AVL MANICURE SPA", price: "₹1200" },
+      { name: "BOMBINI ICECREAM PEDICURE", price: "₹3000" },
+      { name: "BOMBINI ICECREAM MANICURE", price: "₹3000" },
+      { name: "ALGA PEDICURE", price: "₹3000" },
+      { name: "ALGA MANICURE", price: "₹3000" },
     ],
     "FACIALS": [
       { name: "HERBAL FACIAL", price: "₹1000" },

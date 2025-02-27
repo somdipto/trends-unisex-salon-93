@@ -67,8 +67,9 @@ export const services: Service[] = [
     services: [
       { name: "Hair Cut", price: 200 },
       { name: "Beard", price: 100 },
-      { name: "Manicure", price: 500 },
-      { name: "Pedicure", price: 1200 },
+      { name: "Regular Manicure", price: 500 },
+      { name: "Regular Pedicure", price: 500 },
+      { name: "Foot Massage", price: 500 },
       { name: "Oil Massage", price: 400 }
     ]
   }
