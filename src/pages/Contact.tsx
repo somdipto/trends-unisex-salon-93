@@ -1,30 +1,8 @@
-import { useState } from "react";
+
 import { motion } from "framer-motion";
-import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Here you would typically handle the form submission
-    toast.success("Thank you for your message! We'll get back to you soon.");
-    setFormData({ name: "", email: "", phone: "", message: "" });
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
@@ -49,22 +27,28 @@ const Contact = () => {
             <div>
               <h2 className="text-2xl font-semibold mb-4">Get In Touch</h2>
               <p className="text-gray-600">
-                Have questions? We'd love to hear from you. Send us a message and
-                we'll respond as soon as possible.
+                Have questions? We'd love to hear from you. Call us or visit our social media pages.
               </p>
             </div>
 
             <div>
               <h3 className="text-xl font-semibold mb-2">Follow Us</h3>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-600 hover:text-black">
+                <a 
+                  href="https://www.instagram.com/the_trends_salon_malleswaram" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-gray-600 hover:text-black"
+                >
                   Instagram
                 </a>
-                <a href="#" className="text-gray-600 hover:text-black">
+                <a 
+                  href="https://www.facebook.com/people/The-Trends-unisex-salon/61570822178102" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-gray-600 hover:text-black"
+                >
                   Facebook
-                </a>
-                <a href="#" className="text-gray-600 hover:text-black">
-                  Twitter
                 </a>
               </div>
             </div>
@@ -72,8 +56,8 @@ const Contact = () => {
             <div>
               <h3 className="text-xl font-semibold mb-2">Contact Info</h3>
               <div className="space-y-2 text-gray-600">
-                <p>Email: trendsunisex@gmail.com</p>
-                <p>Phone: (555) 123-4567</p>
+                <p>Email: trendsunisexsalon8@gmail.com</p>
+                <p>Phone: +91 90713 31124 (Malleswaram)</p>
               </div>
             </div>
           </motion.div>
@@ -82,86 +66,41 @@ const Contact = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
+            className="bg-gray-50 p-8 rounded-lg shadow-sm"
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <h2 className="text-2xl font-semibold mb-6">Our Branches</h2>
+            
+            <div className="space-y-6">
               <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-                />
+                <h3 className="text-xl font-semibold mb-2">Malleshwaram</h3>
+                <p className="text-gray-600">
+                  +91 90713 31124
+                </p>
+                <p className="text-gray-600 mt-1">
+                  #7, 3rd Main Road, Malleshwaram, Bangalore - 560003
+                </p>
               </div>
-
+              
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-                />
+                <h3 className="text-xl font-semibold mb-2">Rajajinagar</h3>
+                <p className="text-gray-600">
+                  +91 81233 28824
+                </p>
+                <p className="text-gray-600 mt-1">
+                  Rajajinagar, Bangalore
+                </p>
               </div>
-
+              
               <div>
-                <label
-                  htmlFor="phone"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Phone
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-                />
+                <h3 className="text-xl font-semibold mb-2">Hebbal</h3>
+                <p className="text-gray-600">
+                  +91 63628 56410
+                </p>
+                <p className="text-gray-600 mt-1">
+                  Hebbal, Bangalore
+                </p>
               </div>
-
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={4}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors"
-              >
-                Send Message
-              </button>
-            </form>
+            </div>
           </motion.div>
         </div>
       </div>
