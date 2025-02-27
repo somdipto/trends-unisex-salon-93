@@ -67,8 +67,8 @@ const ServicesMenu = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="left-4" />
-          <CarouselNext className="right-4" />
+          <CarouselPrevious className="absolute -left-12 lg:-left-14" />
+          <CarouselNext className="absolute -right-12 lg:-right-14" />
         </Carousel>
       </div>
     </div>
