@@ -8,27 +8,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-
-const services = [
-  {
-    name: "Professional Haircut",
-    description: "Expert haircuts tailored to your style",
-    price: "₹999",
-    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-  },
-  {
-    name: "Hair Treatment",
-    description: "Revitalize your hair with premium treatments",
-    price: "₹1,499",
-    image: "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-  },
-  {
-    name: "Premium Styling",
-    description: "Complete hair transformation with expert styling",
-    price: "₹1,999",
-    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-  },
-];
+import { services } from "@/data/servicesData";
+import { handleBooking } from "@/utils/booking";
 
 const ServicesMenu = () => {
   return (
@@ -36,6 +17,9 @@ const ServicesMenu = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-serif mb-4">Services</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Choose from our carefully curated service packages
+          </p>
         </div>
 
         <Carousel className="w-full max-w-5xl mx-auto">
@@ -46,24 +30,37 @@ const ServicesMenu = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 m-2 group"
+                  className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 m-2 h-full group"
                 >
-                  <div className="aspect-[4/3] relative overflow-hidden">
-                    <img
-                      src={service.image}
-                      alt={service.name}
-                      className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-lg font-serif mb-2">{service.name}</h3>
-                    <p className="text-lg font-light mb-2">{service.price}</p>
-                    <p className="text-gray-600 text-sm mb-6">{service.description}</p>
+                  <div className="p-6 flex flex-col h-full">
+                    <h3 className="text-xl font-libre mb-3">{service.name}</h3>
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="text-2xl font-bold text-blue-600">
+                        ₹{service.discountedPrice}
+                      </span>
+                      <span className="text-gray-500 line-through text-sm">
+                        ₹{service.originalPrice}
+                      </span>
+                      <span className="text-blue-600 text-sm">
+                        Save ₹{service.originalPrice - service.discountedPrice}
+                      </span>
+                    </div>
+                    <div className="flex-grow">
+                      <ul className="space-y-2 mb-4">
+                        {service.services.map((item) => (
+                          <li key={item.name} className="flex justify-between text-sm">
+                            <span>{item.name}</span>
+                            <span className="text-gray-600">₹{item.price}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                     <Button 
                       variant="outline" 
-                      className="w-full hover:bg-black hover:text-white transition-colors duration-300"
+                      onClick={() => handleBooking(service.name, service.discountedPrice)}
+                      className="w-full bg-black text-white hover:bg-gray-800 transition-colors"
                     >
-                      Book now
+                      Book Now
                     </Button>
                   </div>
                 </motion.div>
