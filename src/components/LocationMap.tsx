@@ -1,3 +1,4 @@
+
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -10,7 +11,7 @@ const locations = [
     name: "Trends Unisex Saloon - Malleshwaram",
     address: "184,3rd cross, Link Rd, Malleshwaram, Bengaluru, Karnataka 560003",
     phone: "+919071331124",
-    hours: "Mon-Sat: 9AM-8PM, Sun: 10AM-6PM",
+    hours: "Mon-Sat: 9AM-9PM, Sun: 10AM-6PM",
     coordinates: [12.995784605395825, 77.57368586724279] as LatLngTuple,
     instagram: "https://www.instagram.com/the_trends_salon_malleswaram",
   },
@@ -18,7 +19,7 @@ const locations = [
     name: "Trends Unisex Saloon - Rajajinagar",
     address: "483, 1st Stage, 6th Phase, 60 Feet Road WOC Road, Rajajinagar, (opp to Reliance Fresh Mart), Bengaluru",
     phone: "+918123328824",
-    hours: "Mon-Sat: 9AM-8PM, Sun: 10AM-6PM",
+    hours: "Mon-Sat: 9AM-9PM, Sun: 10AM-6PM",
     coordinates: [12.987444307249396, 77.54460931117136] as LatLngTuple,
     instagram: "https://www.instagram.com/the_trends_salon_rajajinagar",
   },
@@ -26,7 +27,7 @@ const locations = [
     name: "Trends Unisex Saloon - Hebbal",
     address: "Near Atria Institute of Technology, R.T Nagar, Hebbala, Bengaluru, Karnataka 560024",
     phone: "+916362856410",
-    hours: "Mon-Sat: 9AM-8PM, Sun: 10AM-6PM",
+    hours: "Mon-Sat: 9AM-9PM, Sun: 10AM-6PM",
     coordinates: [13.033676840844054, 77.5890606914712] as LatLngTuple,
     instagram: "https://www.instagram.com/the_trends_salon_hebbal",
   },
