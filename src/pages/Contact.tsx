@@ -58,6 +58,7 @@ const Contact = () => {
               <div className="space-y-2 text-gray-600">
                 <p>Email: trendsunisexsalon8@gmail.com</p>
                 <p>Phone: +91 90713 31124 (Malleswaram)</p>
+                <p>Hours: Mon-Sun: 9AM-9PM</p>
               </div>
             </div>
           </motion.div>
@@ -79,6 +80,9 @@ const Contact = () => {
                 <p className="text-gray-600 mt-1">
                   #7, 3rd Main Road, Malleshwaram, Bangalore - 560003
                 </p>
+                <p className="text-gray-600 mt-1">
+                  Hours: Mon-Sun: 9AM-9PM
+                </p>
               </div>
               
               <div>
@@ -89,6 +93,9 @@ const Contact = () => {
                 <p className="text-gray-600 mt-1">
                   Rajajinagar, Bangalore
                 </p>
+                <p className="text-gray-600 mt-1">
+                  Hours: Mon-Sun: 9AM-9PM
+                </p>
               </div>
               
               <div>
@@ -98,6 +105,9 @@ const Contact = () => {
                 </p>
                 <p className="text-gray-600 mt-1">
                   Hebbal, Bangalore
+                </p>
+                <p className="text-gray-600 mt-1">
+                  Hours: Mon-Sun: 9AM-9PM
                 </p>
               </div>
             </div>
