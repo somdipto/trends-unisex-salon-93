@@ -35,7 +35,7 @@ const Navbar = () => {
             whileHover={{ scale: 1.05 }}
           >
             <Link to="/" className="text-xl font-libre text-black">
-              Trends Unisex Salon
+              The Trends Unisex Salon
             </Link>
           </motion.div>
           

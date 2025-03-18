@@ -8,7 +8,7 @@ import type { LatLngTuple } from "leaflet";
 
 const locations = [
   {
-    name: "Trends Unisex Saloon - Malleshwaram",
+    name: "The Trends Unisex Salon - Malleshwaram",
     address: "184,3rd cross, Link Rd, Malleshwaram, Bengaluru, Karnataka 560003",
     phone: "+919071331124",
     hours: "Mon-Sun: 9AM-9PM",
@@ -16,7 +16,7 @@ const locations = [
     instagram: "https://www.instagram.com/the_trends_salon_malleswaram",
   },
   {
-    name: "Trends Unisex Saloon - Rajajinagar",
+    name: "The Trends Unisex Salon - Rajajinagar",
     address: "483, 1st Stage, 6th Phase, 60 Feet Road WOC Road, Rajajinagar, (opp to Reliance Fresh Mart), Bengaluru",
     phone: "+918123328824",
     hours: "Mon-Sun: 9AM-9PM",
@@ -24,7 +24,7 @@ const locations = [
     instagram: "https://www.instagram.com/the_trends_salon_rajajinagar",
   },
   {
-    name: "Trends Unisex Saloon - Hebbal",
+    name: "The Trends Unisex Salon - Hebbal",
     address: "Near Atria Institute of Technology, R.T Nagar, Hebbala, Bengaluru, Karnataka 560024",
     phone: "+916362856410",
     hours: "Mon-Sun: 9AM-9PM",

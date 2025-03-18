@@ -1,4 +1,3 @@
-
 import { Facebook, Instagram } from 'lucide-react';
 
 export default function Footer() {
@@ -15,7 +14,7 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-semibold mb-4">About Us</h3>
             <p className="text-black leading-relaxed">
-              Trends Unisex Salon is a premium hair & beauty salon offering top-quality services across Bangalore.
+              The Trends Unisex Salon is a premium hair & beauty salon offering top-quality services across Bangalore.
             </p>
           </div>
 
@@ -108,7 +107,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-gray-200 mt-8 pt-8 text-center text-black">
-          <p className="text-sm">&copy; {new Date().getFullYear()} Trends Unisex. All rights reserved.</p>
+          <p className="text-sm">&copy; {new Date().getFullYear()} The Trends Unisex Salon. All rights reserved.</p>
         </div>
       </div>
     </footer>
