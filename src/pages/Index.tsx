@@ -1,4 +1,5 @@
 
+import { memo } from "react";
 import Hero from "@/components/Hero";
 import ImageCarousel from "@/components/ImageCarousel";
 import ServicesMenu from "@/components/ServicesMenu";
@@ -11,21 +12,30 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import FloatingOffer from "@/components/FloatingOffer";
 
+// Memoize the main content to prevent unnecessary re-renders
+const MainContent = memo(() => {
+  return (
+    <div className="relative z-0 space-y-16">
+      <ServicesMenu />
+      <ExclusiveOffers />
+      <OffersCarousel />
+      <LocationMap />
+      <Testimonials />
+      <Footer />
+      <WhatsAppButton />
+    </div>
+  );
+});
+
+MainContent.displayName = "MainContent";
+
 const Index = () => {
   return (
     <div className="min-h-screen bg-white relative">
       <Navbar />
       <Hero />
       <FloatingOffer />
-      <div className="relative z-0 space-y-16">
-        <ServicesMenu />
-        <ExclusiveOffers />
-        <OffersCarousel />
-        <LocationMap />
-        <Testimonials />
-        <Footer />
-        <WhatsAppButton />
-      </div>
+      <MainContent />
     </div>
   );
 };

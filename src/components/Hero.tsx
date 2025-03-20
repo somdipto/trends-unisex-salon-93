@@ -1,7 +1,8 @@
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
+// Define hero images separately for better organization
 const heroImages = [
   {
     url: "/lovable-uploads/72b10879-41a6-463e-8e85-2d5a0b42fcb3.png",
@@ -22,19 +23,26 @@ const heroImages = [
 
 const Hero = () => {
   const [currentImage, setCurrentImage] = useState(0);
+  const imagesPreloaded = useRef(false);
   const whatsappNumber = "+919071331124";
   const whatsappUrl = `https://wa.me/${whatsappNumber}`;
 
+  // Preload images only once
   useEffect(() => {
-    // Preload all images immediately when component mounts
-    heroImages.forEach((image) => {
-      const img = new Image();
-      img.src = image.url;
-    });
+    if (!imagesPreloaded.current) {
+      heroImages.forEach((image) => {
+        const img = new Image();
+        img.src = image.url;
+      });
+      imagesPreloaded.current = true;
+    }
 
+    // Set up image rotation timer
     const timer = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % heroImages.length);
     }, 5000);
+    
+    // Clean up timer on component unmount
     return () => clearInterval(timer);
   }, []);
 
@@ -62,8 +70,8 @@ const Hero = () => {
               style={{
                 objectPosition: image.position
               }}
-              loading="eager"
-              decoding="sync"
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
             />
             <div 
               className="absolute inset-0"

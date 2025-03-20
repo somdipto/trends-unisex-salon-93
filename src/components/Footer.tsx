@@ -1,6 +1,8 @@
-import { Facebook, Instagram } from 'lucide-react';
 
-export default function Footer() {
+import { Facebook, Instagram } from 'lucide-react';
+import { memo } from 'react';
+
+const Footer = () => {
   const whatsappNumber = "+919071331124";
   const whatsappUrl = `https://wa.me/${whatsappNumber}`;
   const mainInstagramUrl = "https://www.instagram.com/the_trends_salon_malleswaram";
@@ -112,4 +114,6 @@ export default function Footer() {
       </div>
     </footer>
   );
-}
+};
+
+export default memo(Footer);
