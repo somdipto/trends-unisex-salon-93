@@ -63,7 +63,7 @@ const Hero = () => {
                 objectPosition: image.position
               }}
               loading="eager"
-              fetchPriority="high"
+              priority="high"
               decoding="sync"
             />
             <div 
