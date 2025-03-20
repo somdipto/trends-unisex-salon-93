@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
-import * as ColorThief from "color-thief-browser";
+import { ColorThief } from "color-thief-browser";
 
 interface OfferCardProps {
   title: string;
@@ -18,10 +18,10 @@ const OfferCard = ({
   position,
   onClick
 }: OfferCardProps) => {
-  const isVisible = Math.abs(position) <= 1;
   const [dominantColor, setDominantColor] = useState<string>('rgba(0, 0, 0, 0.1)');
   const [isMobile, setIsMobile] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
+  const colorThiefRef = useRef<ColorThief | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -34,21 +34,24 @@ const OfferCard = ({
   }, []);
 
   useEffect(() => {
+    if (!colorThiefRef.current) {
+      colorThiefRef.current = new ColorThief();
+    }
+    
     const img = new Image();
     img.crossOrigin = "Anonymous";
     img.src = image;
     img.onload = () => {
-      const colorThief = new ColorThief.ColorThief();
       try {
-        const color = colorThief.getColor(img);
-        setDominantColor(`rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.3)`);
+        if (colorThiefRef.current) {
+          const color = colorThiefRef.current.getColor(img);
+          setDominantColor(`rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.3)`);
+        }
       } catch (error) {
         console.error("Error extracting color:", error);
       }
     };
   }, [image]);
-
-  if (!isVisible) return null;
 
   const cardSize = isMobile ? {
     width: 280,

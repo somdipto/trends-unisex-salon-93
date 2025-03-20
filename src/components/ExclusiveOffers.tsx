@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import OfferCard from "./offers/OfferCard";
 import CarouselDots from "./offers/CarouselDots";
 import { offers } from "./offers/offersData";
@@ -8,6 +8,7 @@ const ExclusiveOffers = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const imagesPreloaded = useRef(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -20,22 +21,26 @@ const ExclusiveOffers = () => {
   }, []);
 
   useEffect(() => {
-    const imagePromises = offers.slice(0, 3).map((offer) => {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.src = offer.image;
-        img.onload = resolve;
+    if (!imagesPreloaded.current) {
+      // Only load the first 3 images initially for faster rendering
+      const imagePromises = offers.slice(0, 3).map((offer) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = offer.image;
+          img.onload = resolve;
+        });
       });
-    });
 
-    Promise.all(imagePromises).then(() => {
-      setImagesLoaded(true);
-      // Load remaining images after initial render
-      offers.slice(3).forEach((offer) => {
-        const img = new Image();
-        img.src = offer.image;
+      Promise.all(imagePromises).then(() => {
+        setImagesLoaded(true);
+        // Load remaining images after initial render
+        offers.slice(3).forEach((offer) => {
+          const img = new Image();
+          img.src = offer.image;
+        });
+        imagesPreloaded.current = true;
       });
-    });
+    }
   }, []);
 
   useEffect(() => {
@@ -53,6 +58,28 @@ const ExclusiveOffers = () => {
     );
   }
 
+  // Calculate the visible offers (show current and adjacent)
+  const visibleOffers = offers.map((offer, index) => {
+    const position = index - activeIndex;
+    
+    // Adjust for circular navigation
+    // When at the beginning, the last item should appear on the left
+    // When at the end, the first item should appear on the right
+    let adjustedPosition = position;
+    
+    if (activeIndex === 0 && index === offers.length - 1) {
+      adjustedPosition = -1;
+    } else if (activeIndex === offers.length - 1 && index === 0) {
+      adjustedPosition = 1;
+    }
+    
+    return {
+      ...offer,
+      position: adjustedPosition,
+      isActive: index === activeIndex
+    };
+  }).filter(offer => Math.abs(offer.position) <= 1);
+
   return (
     <div className="py-8 md:py-16 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
       <div className="max-w-[1920px] mx-auto">
@@ -63,15 +90,15 @@ const ExclusiveOffers = () => {
         <div className="relative h-[400px] md:h-[500px] w-full">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="flex items-center justify-center w-full">
-              {offers.map((offer, index) => (
+              {visibleOffers.map((offer) => (
                 <OfferCard
                   key={offer.id}
                   title={offer.title}
                   price={offer.price}
                   image={offer.image}
-                  isActive={index === activeIndex}
-                  position={index - activeIndex}
-                  onClick={() => setActiveIndex(index)}
+                  isActive={offer.isActive}
+                  position={offer.position}
+                  onClick={() => setActiveIndex(Number(offer.id) - 1)}
                 />
               ))}
             </div>
@@ -88,4 +115,4 @@ const ExclusiveOffers = () => {
   );
 };
 
-export default ExclusiveOffers;
+export default memo(ExclusiveOffers);
