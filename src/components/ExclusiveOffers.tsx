@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import OfferCard from "./offers/OfferCard";
 import CarouselDots from "./offers/CarouselDots";
 import { offers } from "./offers/offersData";
@@ -8,18 +8,8 @@ const ExclusiveOffers = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const imagesPreloaded = useRef(false);
 
-  // Memoize visible offers to prevent unnecessary rerenders
-  const visibleOffers = useMemo(() => {
-    return offers.map((offer, index) => ({
-      ...offer,
-      position: index - activeIndex,
-      isActive: index === activeIndex,
-      isVisible: Math.abs(index - activeIndex) <= 1
-    }));
-  }, [activeIndex]);
-
-  // Handle window resize
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -30,58 +20,29 @@ const ExclusiveOffers = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Optimize image loading - load visible images first, then others
   useEffect(() => {
-    const initialImagesToLoad = 3; // Load first 3 images initially
-    
-    // Preload the most important images first (the active one and adjacent)
-    const priorityIndices = [
-      activeIndex,
-      (activeIndex + 1) % offers.length,
-      (activeIndex - 1 + offers.length) % offers.length
-    ];
-    
-    const uniquePriorityIndices = [...new Set(priorityIndices)];
-    
-    const imagePromises = uniquePriorityIndices.map((index) => {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.src = offers[index].image;
-        img.onload = resolve;
-        img.onerror = resolve; // Still resolve on error to avoid hanging
-      });
-    });
-
-    Promise.all(imagePromises).then(() => {
-      setImagesLoaded(true);
-      
-      // Load remaining images after initial render
-      const remainingIndices = Array.from(
-        { length: offers.length },
-        (_, i) => i
-      ).filter(i => !uniquePriorityIndices.includes(i));
-      
-      // Use requestIdleCallback or setTimeout to load the rest without blocking UI
-      if (window.requestIdleCallback) {
-        window.requestIdleCallback(() => {
-          loadRemainingImages(remainingIndices);
+    if (!imagesPreloaded.current) {
+      // Only load the first 3 images initially for faster rendering
+      const imagePromises = offers.slice(0, 3).map((offer) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = offer.image;
+          img.onload = resolve;
         });
-      } else {
-        setTimeout(() => {
-          loadRemainingImages(remainingIndices);
-        }, 200);
-      }
-    });
+      });
+
+      Promise.all(imagePromises).then(() => {
+        setImagesLoaded(true);
+        // Load remaining images after initial render
+        offers.slice(3).forEach((offer) => {
+          const img = new Image();
+          img.src = offer.image;
+        });
+        imagesPreloaded.current = true;
+      });
+    }
   }, []);
 
-  const loadRemainingImages = (indices) => {
-    indices.forEach((index) => {
-      const img = new Image();
-      img.src = offers[index].image;
-    });
-  };
-
-  // Auto-rotate carousel
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % offers.length);
@@ -89,25 +50,35 @@ const ExclusiveOffers = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const handleCardClick = useCallback((index) => {
-    setActiveIndex(index);
-  }, []);
-
-  // Loading state
   if (!imagesLoaded) {
     return (
-      <div className="py-8 md:py-16 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
-        <div className="max-w-[1920px] mx-auto">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-3xl md:text-5xl font-serif mb-4">Our Offers</h2>
-          </div>
-          <div className="h-[400px] md:h-[500px] flex items-center justify-center">
-            <div className="animate-pulse bg-gray-200 w-[300px] md:w-[400px] h-[300px] md:h-[400px] rounded-2xl"></div>
-          </div>
-        </div>
+      <div className="h-[600px] md:h-[600px] flex items-center justify-center">
+        <div className="animate-pulse bg-gray-200 w-[300px] md:w-[400px] h-[300px] md:h-[400px] rounded-2xl"></div>
       </div>
     );
   }
+
+  // Calculate the visible offers (show current and adjacent)
+  const visibleOffers = offers.map((offer, index) => {
+    const position = index - activeIndex;
+    
+    // Adjust for circular navigation
+    // When at the beginning, the last item should appear on the left
+    // When at the end, the first item should appear on the right
+    let adjustedPosition = position;
+    
+    if (activeIndex === 0 && index === offers.length - 1) {
+      adjustedPosition = -1;
+    } else if (activeIndex === offers.length - 1 && index === 0) {
+      adjustedPosition = 1;
+    }
+    
+    return {
+      ...offer,
+      position: adjustedPosition,
+      isActive: index === activeIndex
+    };
+  }).filter(offer => Math.abs(offer.position) <= 1);
 
   return (
     <div className="py-8 md:py-16 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
@@ -119,19 +90,17 @@ const ExclusiveOffers = () => {
         <div className="relative h-[400px] md:h-[500px] w-full">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="flex items-center justify-center w-full">
-              {visibleOffers
-                .filter(offer => offer.isVisible)
-                .map((offer) => (
-                  <OfferCard
-                    key={offer.id}
-                    title={offer.title}
-                    price={offer.price}
-                    image={offer.image}
-                    isActive={offer.isActive}
-                    position={offer.position}
-                    onClick={() => handleCardClick(offers.findIndex(o => o.id === offer.id))}
-                  />
-                ))}
+              {visibleOffers.map((offer) => (
+                <OfferCard
+                  key={offer.id}
+                  title={offer.title}
+                  price={offer.price}
+                  image={offer.image}
+                  isActive={offer.isActive}
+                  position={offer.position}
+                  onClick={() => setActiveIndex(Number(offer.id) - 1)}
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -146,4 +115,4 @@ const ExclusiveOffers = () => {
   );
 };
 
-export default ExclusiveOffers;
+export default memo(ExclusiveOffers);

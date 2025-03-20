@@ -13,17 +13,15 @@ interface OfferCardProps {
 }
 
 const OfferCard = ({
-  title,
-  price,
   image,
   isActive,
   position,
   onClick
 }: OfferCardProps) => {
-  const isVisible = Math.abs(position) <= 1;
   const [dominantColor, setDominantColor] = useState<string>('rgba(0, 0, 0, 0.1)');
   const [isMobile, setIsMobile] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
+  const colorThiefRef = useRef<ColorThief | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -36,31 +34,24 @@ const OfferCard = ({
   }, []);
 
   useEffect(() => {
-    if (!isVisible) return; // Only process visible cards
+    if (!colorThiefRef.current) {
+      colorThiefRef.current = new ColorThief();
+    }
     
     const img = new Image();
     img.crossOrigin = "Anonymous";
     img.src = image;
-    
     img.onload = () => {
       try {
-        const colorThief = new ColorThief();
-        const color = colorThief.getColor(img);
-        setDominantColor(`rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.3)`);
+        if (colorThiefRef.current) {
+          const color = colorThiefRef.current.getColor(img);
+          setDominantColor(`rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.3)`);
+        }
       } catch (error) {
         console.error("Error extracting color:", error);
-        // Fallback to a neutral color
-        setDominantColor('rgba(200, 200, 200, 0.3)');
       }
     };
-    
-    img.onerror = () => {
-      console.error("Error loading image for color extraction");
-      setDominantColor('rgba(200, 200, 200, 0.3)');
-    };
-  }, [image, isVisible]);
-
-  if (!isVisible) return null;
+  }, [image]);
 
   const cardSize = isMobile ? {
     width: 280,
@@ -106,15 +97,11 @@ const OfferCard = ({
           <img
             ref={imgRef}
             src={image}
-            alt={title}
-            loading="lazy"
+            alt=""
+            loading="eager"
             decoding="async"
             className="w-full h-full object-cover"
           />
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-            <h3 className="text-white text-xl font-bold">{title}</h3>
-            <p className="text-white font-semibold">{price}</p>
-          </div>
         </div>
       </motion.div>
     </motion.div>
