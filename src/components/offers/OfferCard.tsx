@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
-import * as ColorThief from "color-thief-browser";
+import { ColorThief } from "color-thief-browser";
 
 interface OfferCardProps {
   title: string;
@@ -13,6 +13,8 @@ interface OfferCardProps {
 }
 
 const OfferCard = ({
+  title,
+  price,
   image,
   isActive,
   position,
@@ -34,19 +36,29 @@ const OfferCard = ({
   }, []);
 
   useEffect(() => {
+    if (!isVisible) return; // Only process visible cards
+    
     const img = new Image();
     img.crossOrigin = "Anonymous";
     img.src = image;
+    
     img.onload = () => {
-      const colorThief = new ColorThief.ColorThief();
       try {
+        const colorThief = new ColorThief();
         const color = colorThief.getColor(img);
         setDominantColor(`rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.3)`);
       } catch (error) {
         console.error("Error extracting color:", error);
+        // Fallback to a neutral color
+        setDominantColor('rgba(200, 200, 200, 0.3)');
       }
     };
-  }, [image]);
+    
+    img.onerror = () => {
+      console.error("Error loading image for color extraction");
+      setDominantColor('rgba(200, 200, 200, 0.3)');
+    };
+  }, [image, isVisible]);
 
   if (!isVisible) return null;
 
@@ -94,11 +106,15 @@ const OfferCard = ({
           <img
             ref={imgRef}
             src={image}
-            alt=""
-            loading="eager"
+            alt={title}
+            loading="lazy"
             decoding="async"
             className="w-full h-full object-cover"
           />
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+            <h3 className="text-white text-xl font-bold">{title}</h3>
+            <p className="text-white font-semibold">{price}</p>
+          </div>
         </div>
       </motion.div>
     </motion.div>
