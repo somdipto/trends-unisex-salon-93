@@ -4,24 +4,19 @@ import { useEffect, useState } from "react";
 
 const heroImages = [
   {
-    url: "/lovable-uploads/b3ba3ee8-bc91-4435-a5ec-7e064c5416d0.png",
-    alt: "Modern salon interior with elegant arched mirrors and wood accents",
-    position: "center 30%"
+    url: "/lovable-uploads/72b10879-41a6-463e-8e85-2d5a0b42fcb3.png",
+    alt: "Woman with flowing dark hair on light background",
+    position: "center center"
   },
   {
-    url: "/lovable-uploads/4b5da105-2cc3-46b2-a5ed-d95e263a3c1a.png",
-    alt: "Luxury salon with marble floors and pendant lighting",
-    position: "center 40%"
+    url: "/lovable-uploads/8386bfe9-9e0a-461f-ace2-682af9504539.png",
+    alt: "Side profile of woman with long flowing dark hair",
+    position: "center center"
   },
   {
-    url: "/lovable-uploads/374ad3e9-2987-40aa-9ba5-d2dc2ed40a0c.png",
-    alt: "Contemporary salon with natural decor and green elements",
-    position: "center 35%"
-  },
-  {
-    url: "/lovable-uploads/4b8789a3-c86f-40ce-964e-e74c05d20b42.png",
-    alt: "Professional salon client with styled blonde waves",
-    position: "center 25%"
+    url: "/lovable-uploads/e915892f-039f-48d8-8508-7516a007136e.png",
+    alt: "Woman with dark hair on warm gold background",
+    position: "center center"
   }
 ];
 
