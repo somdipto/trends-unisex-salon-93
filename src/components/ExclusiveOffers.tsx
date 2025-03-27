@@ -9,7 +9,7 @@ const ExclusiveOffers = () => {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Memoize device detection to prevent unnecessary re-renders
+  // Detect device size
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -22,32 +22,42 @@ const ExclusiveOffers = () => {
 
   // Progressive image loading strategy
   useEffect(() => {
+    let isMounted = true;
+    
     // First load only the images we need to display initially
     const initialImages = offers.slice(0, 3).map(offer => {
-      return new Promise((resolve) => {
+      return new Promise<void>((resolve) => {
         const img = new Image();
         img.src = offer.image;
-        img.onload = resolve;
-        img.onerror = resolve; // Still resolve on error to avoid hanging
+        img.onload = () => resolve();
+        img.onerror = () => resolve(); // Still resolve on error to avoid hanging
       });
     });
 
     Promise.all(initialImages)
       .then(() => {
-        setImagesLoaded(true);
-        
-        // Then load the remaining images in the background
-        setTimeout(() => {
-          offers.slice(3).forEach((offer) => {
-            const img = new Image();
-            img.src = offer.image;
-          });
-        }, 1000); // Delay loading of remaining images
+        if (isMounted) {
+          setImagesLoaded(true);
+          
+          // Then load the remaining images in the background
+          setTimeout(() => {
+            offers.slice(3).forEach((offer) => {
+              const img = new Image();
+              img.src = offer.image;
+            });
+          }, 1000); // Delay loading of remaining images
+        }
       })
       .catch(() => {
-        // Ensure we still show the component even if image loading fails
-        setImagesLoaded(true);
+        if (isMounted) {
+          // Ensure we still show the component even if image loading fails
+          setImagesLoaded(true);
+        }
       });
+      
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // Auto-rotate carousel
@@ -63,6 +73,12 @@ const ExclusiveOffers = () => {
     setActiveIndex(index);
   }, []);
 
+  // Filter offers to only show current and adjacent offers for better performance
+  const visibleOffers = useMemo(() => {
+    return offers.filter((_, index) => Math.abs(index - activeIndex) <= 1);
+  }, [activeIndex]);
+
+  // Loading placeholder
   if (!imagesLoaded) {
     return (
       <div className="h-[600px] md:h-[600px] flex items-center justify-center">
@@ -70,11 +86,6 @@ const ExclusiveOffers = () => {
       </div>
     );
   }
-
-  // Filter offers to only show current and adjacent offers for better performance
-  const visibleOffers = useMemo(() => {
-    return offers.filter((_, index) => Math.abs(index - activeIndex) <= 1);
-  }, [activeIndex]);
 
   return (
     <div className="py-8 md:py-16 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
