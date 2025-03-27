@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import OfferCard from "./offers/OfferCard";
 import CarouselDots from "./offers/CarouselDots";
 import { offers } from "./offers/offersData";
@@ -9,6 +9,7 @@ const ExclusiveOffers = () => {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  // Memoize device detection to prevent unnecessary re-renders
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -19,30 +20,47 @@ const ExclusiveOffers = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Progressive image loading strategy
   useEffect(() => {
-    const imagePromises = offers.slice(0, 3).map((offer) => {
+    // First load only the images we need to display initially
+    const initialImages = offers.slice(0, 3).map(offer => {
       return new Promise((resolve) => {
         const img = new Image();
         img.src = offer.image;
         img.onload = resolve;
+        img.onerror = resolve; // Still resolve on error to avoid hanging
       });
     });
 
-    Promise.all(imagePromises).then(() => {
-      setImagesLoaded(true);
-      // Load remaining images after initial render
-      offers.slice(3).forEach((offer) => {
-        const img = new Image();
-        img.src = offer.image;
+    Promise.all(initialImages)
+      .then(() => {
+        setImagesLoaded(true);
+        
+        // Then load the remaining images in the background
+        setTimeout(() => {
+          offers.slice(3).forEach((offer) => {
+            const img = new Image();
+            img.src = offer.image;
+          });
+        }, 1000); // Delay loading of remaining images
+      })
+      .catch(() => {
+        // Ensure we still show the component even if image loading fails
+        setImagesLoaded(true);
       });
-    });
   }, []);
 
+  // Auto-rotate carousel
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % offers.length);
     }, 5000);
     return () => clearInterval(timer);
+  }, []);
+
+  // Handle dot click
+  const handleDotClick = useCallback((index: number) => {
+    setActiveIndex(index);
   }, []);
 
   if (!imagesLoaded) {
@@ -52,6 +70,11 @@ const ExclusiveOffers = () => {
       </div>
     );
   }
+
+  // Filter offers to only show current and adjacent offers for better performance
+  const visibleOffers = useMemo(() => {
+    return offers.filter((_, index) => Math.abs(index - activeIndex) <= 1);
+  }, [activeIndex]);
 
   return (
     <div className="py-8 md:py-16 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
@@ -63,17 +86,20 @@ const ExclusiveOffers = () => {
         <div className="relative h-[400px] md:h-[500px] w-full">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="flex items-center justify-center w-full">
-              {offers.map((offer, index) => (
-                <OfferCard
-                  key={offer.id}
-                  title={offer.title}
-                  price={offer.price}
-                  image={offer.image}
-                  isActive={index === activeIndex}
-                  position={index - activeIndex}
-                  onClick={() => setActiveIndex(index)}
-                />
-              ))}
+              {visibleOffers.map((offer, index) => {
+                const position = offers.indexOf(offer) - activeIndex;
+                return (
+                  <OfferCard
+                    key={offer.id}
+                    title={offer.title.toString()}
+                    price={offer.price}
+                    image={offer.image}
+                    isActive={offers.indexOf(offer) === activeIndex}
+                    position={position}
+                    onClick={() => setActiveIndex(offers.indexOf(offer))}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>
@@ -81,7 +107,7 @@ const ExclusiveOffers = () => {
         <CarouselDots
           total={offers.length}
           activeIndex={activeIndex}
-          onDotClick={setActiveIndex}
+          onDotClick={handleDotClick}
         />
       </div>
     </div>

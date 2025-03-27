@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
-import * as ColorThief from "color-thief-browser";
+import ColorThief from "color-thief-browser";
 
 interface OfferCardProps {
   title: string;
@@ -37,14 +37,22 @@ const OfferCard = ({
     const img = new Image();
     img.crossOrigin = "Anonymous";
     img.src = image;
+    
     img.onload = () => {
-      const colorThief = new ColorThief.ColorThief();
       try {
+        const colorThief = new ColorThief();
         const color = colorThief.getColor(img);
         setDominantColor(`rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.3)`);
       } catch (error) {
         console.error("Error extracting color:", error);
+        // Fallback to a default color
+        setDominantColor('rgba(0, 0, 0, 0.1)');
       }
+    };
+    
+    img.onerror = () => {
+      console.error("Error loading image for color extraction");
+      setDominantColor('rgba(0, 0, 0, 0.1)');
     };
   }, [image]);
 
@@ -94,7 +102,7 @@ const OfferCard = ({
           <img
             ref={imgRef}
             src={image}
-            alt=""
+            alt="Offer"
             loading="eager"
             decoding="async"
             className="w-full h-full object-cover"
