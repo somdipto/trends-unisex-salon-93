@@ -2,58 +2,145 @@
 import { motion } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 
-// Define hero images separately for better organization
+// Define hero images with responsive options
 const heroImages = [
   {
-    url: "/lovable-uploads/72b10879-41a6-463e-8e85-2d5a0b42fcb3.png",
+    // Using WebP for better compression with fallback
+    url: "/lovable-uploads/72b10879-41a6-463e-8e85-2d5a0b42fcb3.webp",
+    fallback: "/lovable-uploads/72b10879-41a6-463e-8e85-2d5a0b42fcb3.png",
     alt: "Woman with flowing dark hair on light background",
-    position: "center center"
+    position: "center center",
+    // Add srcSet for responsive images
+    srcSet: {
+      sm: "/lovable-uploads/72b10879-41a6-463e-8e85-2d5a0b42fcb3-sm.webp",
+      md: "/lovable-uploads/72b10879-41a6-463e-8e85-2d5a0b42fcb3-md.webp",
+      lg: "/lovable-uploads/72b10879-41a6-463e-8e85-2d5a0b42fcb3.webp",
+    }
   },
   {
-    url: "/lovable-uploads/8386bfe9-9e0a-461f-ace2-682af9504539.png",
+    url: "/lovable-uploads/8386bfe9-9e0a-461f-ace2-682af9504539.webp",
+    fallback: "/lovable-uploads/8386bfe9-9e0a-461f-ace2-682af9504539.png",
     alt: "Side profile of woman with long flowing dark hair",
-    position: "center center"
+    position: "center center",
+    srcSet: {
+      sm: "/lovable-uploads/8386bfe9-9e0a-461f-ace2-682af9504539-sm.webp",
+      md: "/lovable-uploads/8386bfe9-9e0a-461f-ace2-682af9504539-md.webp",
+      lg: "/lovable-uploads/8386bfe9-9e0a-461f-ace2-682af9504539.webp",
+    }
   },
   {
-    url: "/lovable-uploads/e915892f-039f-48d8-8508-7516a007136e.png",
+    url: "/lovable-uploads/e915892f-039f-48d8-8508-7516a007136e.webp",
+    fallback: "/lovable-uploads/e915892f-039f-48d8-8508-7516a007136e.png",
     alt: "Woman with dark hair on warm gold background",
-    position: "center center"
+    position: "center center",
+    srcSet: {
+      sm: "/lovable-uploads/e915892f-039f-48d8-8508-7516a007136e-sm.webp",
+      md: "/lovable-uploads/e915892f-039f-48d8-8508-7516a007136e-md.webp",
+      lg: "/lovable-uploads/e915892f-039f-48d8-8508-7516a007136e.webp",
+    }
   }
 ];
 
 const Hero = () => {
   const [currentImage, setCurrentImage] = useState(0);
-  const imagesPreloaded = useRef(false);
+  const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([]);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const whatsappNumber = "+919071331124";
   const whatsappUrl = `https://wa.me/${whatsappNumber}`;
 
-  // Preload images only once
+  // Improved image preloading with tracking
   useEffect(() => {
-    if (!imagesPreloaded.current) {
-      heroImages.forEach((image) => {
-        const img = new Image();
-        img.src = image.url;
-      });
-      imagesPreloaded.current = true;
+    // Initialize loaded status array
+    if (imagesLoaded.length === 0) {
+      setImagesLoaded(new Array(heroImages.length).fill(false));
     }
-
-    // Set up image rotation timer
-    const timer = setInterval(() => {
-      setCurrentImage((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
+    
+    // Create an array to store the image elements
+    const imageElements: HTMLImageElement[] = [];
+    
+    // Preload all images and track loading status
+    heroImages.forEach((image, index) => {
+      const img = new Image();
+      
+      img.onload = () => {
+        // Update the loaded status for this image
+        setImagesLoaded(prev => {
+          const updated = [...prev];
+          updated[index] = true;
+          return updated;
+        });
+      };
+      
+      img.onerror = () => {
+        console.error(`Failed to load image: ${image.url}`);
+        // Try loading the fallback if main image fails
+        if (image.fallback) {
+          const fallbackImg = new Image();
+          fallbackImg.src = image.fallback;
+          imageElements.push(fallbackImg);
+        }
+      };
+      
+      // Start loading the image
+      img.src = image.url;
+      imageElements.push(img);
+    });
+    
+    // Set up image rotation timer only after first image is loaded
+    const checkAndStartTimer = () => {
+      if (imagesLoaded[0]) {
+        // Clear any existing timer
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+        }
+        
+        // Start a new timer
+        timerRef.current = setInterval(() => {
+          setCurrentImage((prev) => (prev + 1) % heroImages.length);
+        }, 5000);
+      }
+    };
+    
+    // Check if first image is already loaded
+    if (imagesLoaded[0]) {
+      checkAndStartTimer();
+    } else {
+      // Set up a watcher for when the first image loads
+      const watcherId = setInterval(() => {
+        if (imagesLoaded[0]) {
+          checkAndStartTimer();
+          clearInterval(watcherId);
+        }
+      }, 200);
+      
+      // Clean up watcher after 10 seconds if image never loads
+      setTimeout(() => clearInterval(watcherId), 10000);
+    }
     
     // Clean up timer on component unmount
-    return () => clearInterval(timer);
-  }, []);
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [imagesLoaded]);
+
+  // Determine if hero should display based on first image loaded
+  const shouldShowHero = imagesLoaded[0] || imagesLoaded.some(loaded => loaded);
 
   return (
     <div className="relative h-[85vh] md:h-screen flex items-center justify-center overflow-hidden">
+      {/* Render a lightweight placeholder while images are loading */}
+      {!shouldShowHero && (
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-gray-800 animate-pulse" />
+      )}
+      
       {heroImages.map((image, index) => (
         <motion.div
           key={image.url}
           initial={false}
           animate={{ 
-            opacity: currentImage === index ? 1 : 0,
+            opacity: currentImage === index && imagesLoaded[index] ? 1 : 0,
             scale: currentImage === index ? 1 : 1.1
           }}
           transition={{ 
@@ -63,16 +150,36 @@ const Hero = () => {
           className="absolute inset-0"
         >
           <div className="relative w-full h-full">
-            <img
-              src={image.url}
-              alt={image.alt}
-              className="w-full h-full object-cover"
-              style={{
-                objectPosition: image.position
-              }}
-              loading={index === 0 ? "eager" : "lazy"}
-              decoding="async"
-            />
+            <picture>
+              {/* Responsive image sources */}
+              <source
+                media="(max-width: 640px)"
+                srcSet={image.srcSet.sm}
+                type="image/webp"
+              />
+              <source
+                media="(max-width: 1024px)"
+                srcSet={image.srcSet.md}
+                type="image/webp"
+              />
+              <source
+                srcSet={image.srcSet.lg}
+                type="image/webp"
+              />
+              {/* Fallback for browsers that don't support WebP */}
+              <img
+                src={image.fallback}
+                alt={image.alt}
+                className="w-full h-full object-cover"
+                style={{ objectPosition: image.position }}
+                loading={index === 0 ? "eager" : "lazy"}
+                decoding="async"
+                onError={(e) => {
+                  // Fallback to original PNG if WebP fails
+                  (e.target as HTMLImageElement).src = image.fallback;
+                }}
+              />
+            </picture>
             <div 
               className="absolute inset-0"
               style={{
@@ -86,7 +193,7 @@ const Hero = () => {
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={{ opacity: shouldShowHero ? 1 : 0, y: shouldShowHero ? 0 : 20 }}
           transition={{ duration: 0.8 }}
           className="space-y-6 md:space-y-8"
         >
@@ -96,7 +203,7 @@ const Hero = () => {
           <motion.p 
             className="text-lg md:text-xl lg:text-2xl mb-8 md:mb-10 max-w-2xl mx-auto font-libre"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity: shouldShowHero ? 1 : 0 }}
             transition={{ delay: 0.3 }}
           >
             Experience premium hair care and styling at Trends Unisex Salon

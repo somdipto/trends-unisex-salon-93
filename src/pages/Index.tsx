@@ -1,16 +1,17 @@
 
-import { memo } from "react";
+import { memo, lazy, Suspense } from "react";
 import Hero from "@/components/Hero";
-import ImageCarousel from "@/components/ImageCarousel";
 import ServicesMenu from "@/components/ServicesMenu";
 import ExclusiveOffers from "@/components/ExclusiveOffers";
-import LocationMap from "@/components/LocationMap";
-import Testimonials from "@/components/Testimonials";
 import Navbar from "@/components/Navbar";
-import OffersCarousel from "@/components/OffersCarousel";
-import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import FloatingOffer from "@/components/FloatingOffer";
+
+// Lazy load components that are not immediately visible
+const LocationMap = lazy(() => import("@/components/LocationMap"));
+const Testimonials = lazy(() => import("@/components/Testimonials"));
+const Footer = lazy(() => import("@/components/Footer"));
+const WhatsAppButton = lazy(() => import("@/components/WhatsAppButton"));
+const OffersCarousel = lazy(() => import("@/components/OffersCarousel"));
 
 // Memoize the main content to prevent unnecessary re-renders
 const MainContent = memo(() => {
@@ -18,11 +19,21 @@ const MainContent = memo(() => {
     <div className="relative z-0 space-y-16">
       <ServicesMenu />
       <ExclusiveOffers />
-      <OffersCarousel />
-      <LocationMap />
-      <Testimonials />
-      <Footer />
-      <WhatsAppButton />
+      <Suspense fallback={<div className="h-64 w-full bg-gray-100 animate-pulse rounded-lg" />}>
+        <OffersCarousel />
+      </Suspense>
+      <Suspense fallback={<div className="h-64 w-full bg-gray-100 animate-pulse rounded-lg" />}>
+        <LocationMap />
+      </Suspense>
+      <Suspense fallback={<div className="h-64 w-full bg-gray-100 animate-pulse rounded-lg" />}>
+        <Testimonials />
+      </Suspense>
+      <Suspense fallback={<div className="h-32 w-full bg-gray-100 animate-pulse rounded-lg" />}>
+        <Footer />
+      </Suspense>
+      <Suspense fallback={<></>}>
+        <WhatsAppButton />
+      </Suspense>
     </div>
   );
 });
