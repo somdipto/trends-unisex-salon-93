@@ -47,14 +47,33 @@ const offers: Offer[] = [
 
 const OffersCarousel = () => {
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [loadedImages, setLoadedImages] = useState<string[]>([]);
 
   useEffect(() => {
+    const imagePromises: Promise<string>[] = [];
+    
     // Preload all images
     offers.forEach((offer) => {
-      const img = new Image();
-      img.src = offer.image;
+      const promise = new Promise<string>((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(offer.image);
+        img.onerror = () => reject(new Error(`Failed to load image: ${offer.image}`));
+        img.src = offer.image;
+      });
+      imagePromises.push(promise);
     });
-    setImagesLoaded(true);
+    
+    // When all images are loaded or when there's an error, mark as loaded anyway
+    Promise.allSettled(imagePromises).then((results) => {
+      const loadedImagesList = results
+        .filter((result): result is PromiseFulfilledResult<string> => result.status === 'fulfilled')
+        .map(result => (result as PromiseFulfilledResult<string>).value);
+      
+      setLoadedImages(loadedImagesList);
+      setImagesLoaded(true);
+    });
+
+    // Cleanup isn't necessary here as we're just loading images
   }, []);
 
   if (!imagesLoaded) {
@@ -83,7 +102,7 @@ const OffersCarousel = () => {
             align: "start",
             loop: true,
             skipSnaps: false,
-            duration: 10, // Faster transition duration (reduced from 20)
+            duration: 10,
             startIndex: 0
           }}
         >
@@ -95,7 +114,7 @@ const OffersCarousel = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }} // Faster animation (reduced from 0.3)
+                    transition={{ duration: 0.2 }}
                     className="relative overflow-hidden rounded-lg"
                   >
                     <img

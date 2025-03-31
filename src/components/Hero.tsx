@@ -2,42 +2,22 @@
 import { motion } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 
-// Define hero images with responsive options
+// Define hero images with responsive options and proper fallbacks
 const heroImages = [
   {
-    // Using WebP for better compression with fallback
-    url: "/lovable-uploads/72b10879-41a6-463e-8e85-2d5a0b42fcb3.webp",
-    fallback: "/lovable-uploads/72b10879-41a6-463e-8e85-2d5a0b42fcb3.png",
+    url: "/lovable-uploads/72b10879-41a6-463e-8e85-2d5a0b42fcb3.png",
     alt: "Woman with flowing dark hair on light background",
     position: "center center",
-    // Add srcSet for responsive images
-    srcSet: {
-      sm: "/lovable-uploads/72b10879-41a6-463e-8e85-2d5a0b42fcb3-sm.webp",
-      md: "/lovable-uploads/72b10879-41a6-463e-8e85-2d5a0b42fcb3-md.webp",
-      lg: "/lovable-uploads/72b10879-41a6-463e-8e85-2d5a0b42fcb3.webp",
-    }
   },
   {
-    url: "/lovable-uploads/8386bfe9-9e0a-461f-ace2-682af9504539.webp",
-    fallback: "/lovable-uploads/8386bfe9-9e0a-461f-ace2-682af9504539.png",
+    url: "/lovable-uploads/8386bfe9-9e0a-461f-ace2-682af9504539.png",
     alt: "Side profile of woman with long flowing dark hair",
     position: "center center",
-    srcSet: {
-      sm: "/lovable-uploads/8386bfe9-9e0a-461f-ace2-682af9504539-sm.webp",
-      md: "/lovable-uploads/8386bfe9-9e0a-461f-ace2-682af9504539-md.webp",
-      lg: "/lovable-uploads/8386bfe9-9e0a-461f-ace2-682af9504539.webp",
-    }
   },
   {
-    url: "/lovable-uploads/e915892f-039f-48d8-8508-7516a007136e.webp",
-    fallback: "/lovable-uploads/e915892f-039f-48d8-8508-7516a007136e.png",
+    url: "/lovable-uploads/e915892f-039f-48d8-8508-7516a007136e.png",
     alt: "Woman with dark hair on warm gold background",
     position: "center center",
-    srcSet: {
-      sm: "/lovable-uploads/e915892f-039f-48d8-8508-7516a007136e-sm.webp",
-      md: "/lovable-uploads/e915892f-039f-48d8-8508-7516a007136e-md.webp",
-      lg: "/lovable-uploads/e915892f-039f-48d8-8508-7516a007136e.webp",
-    }
   }
 ];
 
@@ -73,12 +53,12 @@ const Hero = () => {
       
       img.onerror = () => {
         console.error(`Failed to load image: ${image.url}`);
-        // Try loading the fallback if main image fails
-        if (image.fallback) {
-          const fallbackImg = new Image();
-          fallbackImg.src = image.fallback;
-          imageElements.push(fallbackImg);
-        }
+        // Mark as loaded anyway to avoid blocking the UI
+        setImagesLoaded(prev => {
+          const updated = [...prev];
+          updated[index] = true;
+          return updated;
+        });
       };
       
       // Start loading the image
@@ -114,7 +94,16 @@ const Hero = () => {
       }, 200);
       
       // Clean up watcher after 10 seconds if image never loads
-      setTimeout(() => clearInterval(watcherId), 10000);
+      const timeoutId = setTimeout(() => {
+        clearInterval(watcherId);
+        // If images don't load, still show something
+        setImagesLoaded(prev => prev.map(() => true));
+      }, 10000);
+      
+      return () => {
+        clearInterval(watcherId);
+        clearTimeout(timeoutId);
+      };
     }
     
     // Clean up timer on component unmount
@@ -150,36 +139,14 @@ const Hero = () => {
           className="absolute inset-0"
         >
           <div className="relative w-full h-full">
-            <picture>
-              {/* Responsive image sources */}
-              <source
-                media="(max-width: 640px)"
-                srcSet={image.srcSet.sm}
-                type="image/webp"
-              />
-              <source
-                media="(max-width: 1024px)"
-                srcSet={image.srcSet.md}
-                type="image/webp"
-              />
-              <source
-                srcSet={image.srcSet.lg}
-                type="image/webp"
-              />
-              {/* Fallback for browsers that don't support WebP */}
-              <img
-                src={image.fallback}
-                alt={image.alt}
-                className="w-full h-full object-cover"
-                style={{ objectPosition: image.position }}
-                loading={index === 0 ? "eager" : "lazy"}
-                decoding="async"
-                onError={(e) => {
-                  // Fallback to original PNG if WebP fails
-                  (e.target as HTMLImageElement).src = image.fallback;
-                }}
-              />
-            </picture>
+            <img
+              src={image.url}
+              alt={image.alt}
+              className="w-full h-full object-cover"
+              style={{ objectPosition: image.position }}
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+            />
             <div 
               className="absolute inset-0"
               style={{

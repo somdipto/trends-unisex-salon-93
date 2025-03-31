@@ -5,6 +5,7 @@ import ServicesMenu from "@/components/ServicesMenu";
 import ExclusiveOffers from "@/components/ExclusiveOffers";
 import Navbar from "@/components/Navbar";
 import FloatingOffer from "@/components/FloatingOffer";
+import { Toaster } from "@/components/ui/toaster";
 
 // Lazy load components that are not immediately visible
 const LocationMap = lazy(() => import("@/components/LocationMap"));
@@ -31,9 +32,6 @@ const MainContent = memo(() => {
       <Suspense fallback={<div className="h-32 w-full bg-gray-100 animate-pulse rounded-lg" />}>
         <Footer />
       </Suspense>
-      <Suspense fallback={<></>}>
-        <WhatsAppButton />
-      </Suspense>
     </div>
   );
 });
@@ -47,6 +45,10 @@ const Index = () => {
       <Hero />
       <FloatingOffer />
       <MainContent />
+      <Suspense fallback={null}>
+        <WhatsAppButton />
+      </Suspense>
+      <Toaster />
     </div>
   );
 };

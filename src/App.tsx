@@ -1,10 +1,10 @@
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Services from "./pages/Services";
 import Menu from "./pages/Menu";
 import Contact from "./pages/Contact";
 import Locations from "./pages/Locations";
-import WhatsAppButton from "./components/WhatsAppButton";
 
 function App() {
   return (
@@ -18,7 +18,6 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<Index />} />
         </Routes>
-        <WhatsAppButton />
       </div>
     </Router>
   );
