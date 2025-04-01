@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef, useMemo } from "react";
-import ColorThief from "color-thief-browser";
+import * as ColorThief from "color-thief-browser";
 
 interface OfferCardProps {
   title: string;
