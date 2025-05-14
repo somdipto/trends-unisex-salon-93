@@ -1,18 +1,18 @@
 
 import { motion } from "framer-motion";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 // Define hero image with proper attributes
 const heroImage = {
-  url: "/lovable-uploads/48e4fa9e-e19e-486d-9d53-cbbc2e014ccb.png",
-  alt: "Woman with flowing black hair on light background",
+  url: "/lovable-uploads/7c43c027-7239-422b-81e1-fcbcb6e14523.png",
+  alt: "Woman with flowing black hair on beige background",
   position: {
     desktop: "center center",
-    mobile: "35% center" // Adjusted position for mobile to focus on face/hair
+    mobile: "center center" // Centered position works better for this image
   },
   scale: {
     desktop: 1,
-    mobile: 0.8 // Zoom out to 80% on mobile to show the whole image
+    mobile: 0.8 // Keep the zoom out to 80% on mobile to show the whole image
   }
 };
 
@@ -90,7 +90,7 @@ const Hero = () => {
               style={{ 
                 objectPosition: isMobile ? heroImage.position.mobile : heroImage.position.desktop,
                 transform: isMobile ? `scale(${heroImage.scale.mobile})` : `scale(${heroImage.scale.desktop})`,
-                transformOrigin: isMobile ? "35% center" : "center center"
+                transformOrigin: "center center"
               }}
               loading="eager"
               decoding="async"
@@ -99,7 +99,7 @@ const Hero = () => {
           <div 
             className="absolute inset-0"
             style={{
-              background: "linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.5) 100%)"
+              background: "linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.3) 100%)"
             }}
           />
         </div>
