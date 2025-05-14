@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef, useMemo } from "react";
-import * as ColorThief from "color-thief-browser";
+import { ColorThief } from "color-thief-browser";
 
 interface OfferCardProps {
   title: string;
@@ -46,7 +46,7 @@ const OfferCard = ({
     
     img.onload = () => {
       try {
-        const colorThief = new ColorThief.ColorThief();
+        const colorThief = new ColorThief();
         const color = colorThief.getColor(img);
         setDominantColor(`rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.3)`);
       } catch (error) {
