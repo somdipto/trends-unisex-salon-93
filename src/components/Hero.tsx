@@ -6,13 +6,33 @@ import { useEffect, useState, useRef } from "react";
 const heroImage = {
   url: "/lovable-uploads/48e4fa9e-e19e-486d-9d53-cbbc2e014ccb.png",
   alt: "Woman with flowing black hair on light background",
-  position: "center center",
+  position: {
+    desktop: "center center",
+    mobile: "35% center" // Adjusted position for mobile to focus on face/hair
+  },
 };
 
 const Hero = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const whatsappNumber = "+919071331124";
   const whatsappUrl = `https://wa.me/${whatsappNumber}`;
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    // Initial check
+    checkIsMobile();
+    
+    // Listen for window resize events
+    window.addEventListener('resize', checkIsMobile);
+    
+    // Clean up event listener
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   // Improved image preloading
   useEffect(() => {
@@ -62,7 +82,9 @@ const Hero = () => {
             src={heroImage.url}
             alt={heroImage.alt}
             className="w-full h-full object-cover"
-            style={{ objectPosition: heroImage.position }}
+            style={{ 
+              objectPosition: isMobile ? heroImage.position.mobile : heroImage.position.desktop 
+            }}
             loading="eager"
             decoding="async"
           />
