@@ -1,7 +1,6 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef, useMemo } from "react";
-import { ColorThief } from "color-thief-browser";
 
 interface OfferCardProps {
   title: string;
@@ -18,6 +17,7 @@ const OfferCard = ({
   position,
   onClick
 }: OfferCardProps) => {
+  // Use a fixed color palette instead of extracting from images
   const [dominantColor, setDominantColor] = useState<string>('rgba(0, 0, 0, 0.1)');
   const [isMobile, setIsMobile] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -36,30 +36,23 @@ const OfferCard = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Extract dominant color from image
+  // Use predefined color palette based on position instead of color extraction
   useEffect(() => {
-    if (!isVisible) return; // Only process for visible cards
+    if (!isVisible) return;
     
-    const img = new Image();
-    img.crossOrigin = "Anonymous";
-    img.src = image;
+    // Create a simple palette of semi-transparent colors
+    const colors = [
+      'rgba(66, 135, 245, 0.3)',   // blue
+      'rgba(245, 157, 66, 0.3)',   // orange
+      'rgba(66, 245, 108, 0.3)',   // green
+      'rgba(245, 66, 87, 0.3)',    // red
+      'rgba(194, 66, 245, 0.3)',   // purple
+    ];
     
-    img.onload = () => {
-      try {
-        const colorThief = new ColorThief();
-        const color = colorThief.getColor(img);
-        setDominantColor(`rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.3)`);
-      } catch (error) {
-        console.error("Error extracting color:", error);
-        setDominantColor('rgba(0, 0, 0, 0.1)');
-      }
-    };
-    
-    img.onerror = () => {
-      console.error("Error loading image for color extraction");
-      setDominantColor('rgba(0, 0, 0, 0.1)');
-    };
-  }, [image, isVisible]);
+    // Use position to select color from palette, handle negative positions
+    const colorIndex = Math.abs(position) % colors.length;
+    setDominantColor(colors[colorIndex]);
+  }, [image, isVisible, position]);
 
   // Calculate card size based on device
   const cardSize = useMemo(() => {
