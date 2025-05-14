@@ -10,6 +10,10 @@ const heroImage = {
     desktop: "center center",
     mobile: "35% center" // Adjusted position for mobile to focus on face/hair
   },
+  scale: {
+    desktop: 1,
+    mobile: 0.8 // Zoom out to 80% on mobile to show the whole image
+  }
 };
 
 const Hero = () => {
@@ -78,16 +82,20 @@ const Hero = () => {
         className="absolute inset-0"
       >
         <div className="relative w-full h-full">
-          <img
-            src={heroImage.url}
-            alt={heroImage.alt}
-            className="w-full h-full object-cover"
-            style={{ 
-              objectPosition: isMobile ? heroImage.position.mobile : heroImage.position.desktop 
-            }}
-            loading="eager"
-            decoding="async"
-          />
+          <div className="w-full h-full overflow-hidden">
+            <img
+              src={heroImage.url}
+              alt={heroImage.alt}
+              className="w-full h-full object-cover"
+              style={{ 
+                objectPosition: isMobile ? heroImage.position.mobile : heroImage.position.desktop,
+                transform: isMobile ? `scale(${heroImage.scale.mobile})` : `scale(${heroImage.scale.desktop})`,
+                transformOrigin: isMobile ? "35% center" : "center center"
+              }}
+              loading="eager"
+              decoding="async"
+            />
+          </div>
           <div 
             className="absolute inset-0"
             style={{
