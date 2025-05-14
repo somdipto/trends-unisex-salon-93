@@ -97,19 +97,6 @@ const Contact = () => {
                   Hours: Mon-Sun: 9AM-9PM
                 </p>
               </div>
-              
-              <div>
-                <h3 className="text-xl font-semibold mb-2">Hebbal</h3>
-                <p className="text-gray-600">
-                  +91 63628 56410
-                </p>
-                <p className="text-gray-600 mt-1">
-                  Hebbal, Bangalore
-                </p>
-                <p className="text-gray-600 mt-1">
-                  Hours: Mon-Sun: 9AM-9PM
-                </p>
-              </div>
             </div>
           </motion.div>
         </div>

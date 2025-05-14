@@ -70,12 +70,6 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <p className="font-medium">Hebbal:</p>
-                <a href="tel:+916362856410" className="hover:text-black transition">
-                  +91 63628 56410
-                </a>
-              </li>
-              <li>
                 <a href="mailto:trendsunisexsalon8@gmail.com" className="hover:text-black transition">
                   Email: trendsunisexsalon8@gmail.com
                 </a>

@@ -23,14 +23,6 @@ const locations = [
     coordinates: [12.987444307249396, 77.54460931117136] as LatLngTuple,
     instagram: "https://www.instagram.com/the_trends_salon_rajajinagar",
   },
-  {
-    name: "The Trends Unisex Salon - Hebbal",
-    address: "Near Atria Institute of Technology, R.T Nagar, Hebbala, Bengaluru, Karnataka 560024",
-    phone: "+916362856410",
-    hours: "Mon-Sun: 9AM-9PM",
-    coordinates: [13.033676840844054, 77.5890606914712] as LatLngTuple,
-    instagram: "https://www.instagram.com/the_trends_salon_hebbal",
-  },
 ];
 
 const LocationMap = () => {
