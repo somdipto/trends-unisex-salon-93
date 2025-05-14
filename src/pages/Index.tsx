@@ -1,3 +1,4 @@
+
 import { memo, lazy, Suspense } from "react";
 import Hero from "@/components/Hero";
 import ServicesMenu from "@/components/ServicesMenu";
@@ -6,12 +7,15 @@ import Navbar from "@/components/Navbar";
 import FloatingOffer from "@/components/FloatingOffer";
 import { Toaster } from "@/components/ui/toaster";
 
+// Import OffersCarousel directly instead of using lazy loading
+import OffersCarousel from "@/components/OffersCarousel";
+
 // Lazy load components that are not immediately visible
+// Use default import format to ensure compatibility
 const LocationMap = lazy(() => import("@/components/LocationMap"));
 const Testimonials = lazy(() => import("@/components/Testimonials"));
 const Footer = lazy(() => import("@/components/Footer"));
 const WhatsAppButton = lazy(() => import("@/components/WhatsAppButton"));
-const OffersCarousel = lazy(() => import("@/components/OffersCarousel"));
 
 // Memoize the main content to prevent unnecessary re-renders
 const MainContent = memo(() => {
@@ -19,9 +23,8 @@ const MainContent = memo(() => {
     <div className="relative z-0 space-y-16">
       <ServicesMenu />
       <ExclusiveOffers />
-      <Suspense fallback={<div className="h-64 w-full bg-gray-100 animate-pulse rounded-lg" />}>
-        <OffersCarousel />
-      </Suspense>
+      {/* Use OffersCarousel directly without Suspense since it's imported normally */}
+      <OffersCarousel />
       <Suspense fallback={<div className="h-64 w-full bg-gray-100 animate-pulse rounded-lg" />}>
         <LocationMap />
       </Suspense>
