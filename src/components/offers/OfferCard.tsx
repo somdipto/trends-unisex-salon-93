@@ -46,7 +46,7 @@ const OfferCard = ({
     
     img.onload = () => {
       try {
-        const colorThief = new ColorThief();
+        const colorThief = new ColorThief.default();
         const color = colorThief.getColor(img);
         setDominantColor(`rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.3)`);
       } catch (error) {
