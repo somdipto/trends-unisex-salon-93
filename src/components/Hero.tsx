@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 // Define hero image with proper attributes
 const heroImage = {
-  url: "/lovable-uploads/7c43c027-7239-422b-81e1-fcbcb6e14523.png",
+  url: "/lovable-uploads/5fc03f98-eee3-486a-a086-a7449791916f.png",
   alt: "Woman with flowing black hair on beige background",
   position: {
     desktop: "center center",
@@ -12,7 +12,7 @@ const heroImage = {
   },
   scale: {
     desktop: 1,
-    mobile: 0.8 // Keep the zoom out to 80% on mobile to show the whole image
+    mobile: 1 // Changed back to 1 (no zoom out) for mobile view as requested
   }
 };
 
