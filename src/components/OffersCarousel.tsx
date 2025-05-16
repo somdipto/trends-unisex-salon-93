@@ -89,7 +89,11 @@ const OffersCarousel = () => {
             duration: 10,
             startIndex: activeIndex
           }}
-          onSelect={(index) => setActiveIndex(index)} // Fixed: This now correctly uses the index parameter
+          // Fix: Update onSelect to handle the type properly
+          onSelect={(api) => {
+            const selectedIndex = api.selectedScrollSnap();
+            setActiveIndex(selectedIndex);
+          }}
         >
           <CarouselContent>
             <AnimatePresence mode="wait">
