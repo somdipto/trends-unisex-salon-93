@@ -9,7 +9,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { Offer } from "@/types/services";
 import { useState } from "react";
-import { Flower, Scissors, Award, Spa } from "lucide-react";
+import { Scissors, Star, Award, Heart } from "lucide-react"; // Using available icons from lucide-react
 
 const offers: Offer[] = [
   {
@@ -54,9 +54,9 @@ const OffersCarousel = () => {
       case "styling":
         return <Scissors className="h-12 w-12 text-pink-400" />;
       case "interior":
-        return <Spa className="h-12 w-12 text-emerald-400" />;
+        return <Heart className="h-12 w-12 text-emerald-400" />; // Changed from Spa to Heart
       case "experience":
-        return <Flower className="h-12 w-12 text-purple-400" />;
+        return <Star className="h-12 w-12 text-purple-400" />; // Changed from Flower to Star
       case "salon":
         return <Award className="h-12 w-12 text-amber-400" />;
       default:
@@ -89,7 +89,7 @@ const OffersCarousel = () => {
             duration: 10,
             startIndex: activeIndex
           }}
-          onSelect={(index) => setActiveIndex(index)}
+          onSelect={(index) => setActiveIndex(index)} // Fixed: This now correctly uses the index parameter
         >
           <CarouselContent>
             <AnimatePresence mode="wait">

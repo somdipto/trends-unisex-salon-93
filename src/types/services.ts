@@ -24,5 +24,5 @@ export interface Offer {
   description: string;
   features: string[];
   price: string;
-  image: string;
+  icon: string; // Added the icon property to match usage in OffersCarousel
 }
