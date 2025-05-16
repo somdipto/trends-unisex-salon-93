@@ -5,6 +5,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi
 } from "@/components/ui/carousel";
 import { motion, AnimatePresence } from "framer-motion";
 import { Offer } from "@/types/services";
@@ -48,6 +49,7 @@ const offers: Offer[] = [
 
 const OffersCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 
   const getIconComponent = (iconName: string) => {
     switch (iconName) {
@@ -63,6 +65,23 @@ const OffersCarousel = () => {
         return <Scissors className="h-12 w-12 text-pink-400" />;
     }
   };
+  
+  // Update carousel index when selection changes
+  const handleCarouselSelect = () => {
+    if (!carouselApi) return;
+    setActiveIndex(carouselApi.selectedScrollSnap());
+  };
+
+  // Connect the onSelect handler when the carousel API becomes available
+  React.useEffect(() => {
+    if (!carouselApi) return;
+    
+    carouselApi.on("select", handleCarouselSelect);
+    // Cleanup event listener on unmount
+    return () => {
+      carouselApi.off("select", handleCarouselSelect);
+    };
+  }, [carouselApi]);
   
   return (
     <div className="py-16 bg-gradient-to-b from-white to-gray-50">
@@ -89,11 +108,7 @@ const OffersCarousel = () => {
             duration: 10,
             startIndex: activeIndex
           }}
-          // Fix: Update onSelect to handle the type properly
-          onSelect={(api) => {
-            const selectedIndex = api.selectedScrollSnap();
-            setActiveIndex(selectedIndex);
-          }}
+          setApi={setCarouselApi}
         >
           <CarouselContent>
             <AnimatePresence mode="wait">
@@ -150,7 +165,10 @@ const OffersCarousel = () => {
               {offers.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => {
+                    setActiveIndex(index);
+                    carouselApi?.scrollTo(index);
+                  }}
                   className={`w-2 h-2 rounded-full transition-all ${
                     index === activeIndex 
                       ? "bg-black w-6" 
