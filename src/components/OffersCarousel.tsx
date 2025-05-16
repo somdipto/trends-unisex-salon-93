@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   Carousel,
@@ -11,6 +10,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { Offer } from "@/types/services";
 import { Scissors, Star, Award, Heart } from "lucide-react"; // Using available icons from lucide-react
+import { handleBooking } from "@/utils/booking";
 
 const offers: Offer[] = [
   {
@@ -147,9 +147,14 @@ const OffersCarousel = () => {
                             </ul>
                           </div>
                           <div className="mt-8">
-                            <button className="px-8 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors">
+                            <a 
+                              href={`https://wa.me/+919071331124?text=Hi, I'm interested in the ${offer.title} offer. Can I book an appointment?`}
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="px-8 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors inline-block"
+                            >
                               Book Appointment
-                            </button>
+                            </a>
                           </div>
                         </div>
                       </div>
