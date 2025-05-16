@@ -1,4 +1,5 @@
 
+import React, { useState } from 'react';
 import {
   Carousel,
   CarouselContent,
@@ -9,7 +10,6 @@ import {
 } from "@/components/ui/carousel";
 import { motion, AnimatePresence } from "framer-motion";
 import { Offer } from "@/types/services";
-import { useState } from "react";
 import { Scissors, Star, Award, Heart } from "lucide-react"; // Using available icons from lucide-react
 
 const offers: Offer[] = [
