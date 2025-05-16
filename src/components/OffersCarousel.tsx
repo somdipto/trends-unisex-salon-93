@@ -8,7 +8,8 @@ import {
 } from "@/components/ui/carousel";
 import { motion, AnimatePresence } from "framer-motion";
 import { Offer } from "@/types/services";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Flower, Scissors, Award, Spa } from "lucide-react";
 
 const offers: Offer[] = [
   {
@@ -17,7 +18,7 @@ const offers: Offer[] = [
     description: "Experience luxury styling with our expert team",
     features: ["Modern Equipment", "Professional Staff", "Luxurious Ambiance"],
     price: "Starting from ₹499",
-    image: "/lovable-uploads/4c8fa5a2-d105-4e57-9e8f-76940f1a4d52.png"
+    icon: "styling"
   },
   {
     id: "2",
@@ -25,7 +26,7 @@ const offers: Offer[] = [
     description: "Perfectly designed space for your comfort",
     features: ["Marble Interiors", "LED Mirrors", "Premium Chairs"],
     price: "Visit Us Today",
-    image: "/lovable-uploads/63222189-68c0-4207-8339-7278ccceb239.png"
+    icon: "interior"
   },
   {
     id: "3",
@@ -33,7 +34,7 @@ const offers: Offer[] = [
     description: "State-of-the-art facilities for the best care",
     features: ["Latest Equipment", "Trained Professionals", "Premium Products"],
     price: "Book Now",
-    image: "/lovable-uploads/a6a8280e-065a-4e36-9c48-59bc08e15848.png"
+    icon: "experience"
   },
   {
     id: "4",
@@ -41,59 +42,42 @@ const offers: Offer[] = [
     description: "Your destination for complete beauty care",
     features: ["L'OREAL Products", "Professional Services", "Affordable Prices"],
     price: "Visit Us Today",
-    image: "/lovable-uploads/54f91a2c-0856-4f75-99af-01609e950736.png"
+    icon: "salon"
   }
 ];
 
 const OffersCarousel = () => {
-  const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [loadedImages, setLoadedImages] = useState<string[]>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  useEffect(() => {
-    const imagePromises: Promise<string>[] = [];
-    
-    // Preload all images
-    offers.forEach((offer) => {
-      const promise = new Promise<string>((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => resolve(offer.image);
-        img.onerror = () => reject(new Error(`Failed to load image: ${offer.image}`));
-        img.src = offer.image;
-      });
-      imagePromises.push(promise);
-    });
-    
-    // When all images are loaded or when there's an error, mark as loaded anyway
-    Promise.allSettled(imagePromises).then((results) => {
-      const loadedImagesList = results
-        .filter((result): result is PromiseFulfilledResult<string> => result.status === 'fulfilled')
-        .map(result => (result as PromiseFulfilledResult<string>).value);
-      
-      setLoadedImages(loadedImagesList);
-      setImagesLoaded(true);
-    });
-
-    // Cleanup isn't necessary here as we're just loading images
-  }, []);
-
-  if (!imagesLoaded) {
-    return (
-      <div className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-5xl font-serif mb-4">Exclusive Offers</h2>
-          </div>
-          <div className="animate-pulse w-full max-w-5xl mx-auto aspect-[16/9] bg-gray-200 rounded-lg"></div>
-        </div>
-      </div>
-    );
-  }
+  const getIconComponent = (iconName: string) => {
+    switch (iconName) {
+      case "styling":
+        return <Scissors className="h-12 w-12 text-pink-400" />;
+      case "interior":
+        return <Spa className="h-12 w-12 text-emerald-400" />;
+      case "experience":
+        return <Flower className="h-12 w-12 text-purple-400" />;
+      case "salon":
+        return <Award className="h-12 w-12 text-amber-400" />;
+      default:
+        return <Scissors className="h-12 w-12 text-pink-400" />;
+    }
+  };
   
   return (
-    <div className="py-16 bg-white">
+    <div className="py-16 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-5xl font-serif mb-4">Exclusive Offers</h2>
+        <div className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-5xl font-serif mb-4">Exclusive Offers</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+              Experience premium services tailored to enhance your natural beauty at Trends Unisex Salon.
+            </p>
+          </motion.div>
         </div>
         
         <Carousel 
@@ -103,8 +87,9 @@ const OffersCarousel = () => {
             loop: true,
             skipSnaps: false,
             duration: 10,
-            startIndex: 0
+            startIndex: activeIndex
           }}
+          onSelect={(index) => setActiveIndex(index)}
         >
           <CarouselContent>
             <AnimatePresence mode="wait">
@@ -114,26 +99,40 @@ const OffersCarousel = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="relative overflow-hidden rounded-lg"
+                    transition={{ duration: 0.3 }}
+                    className="p-8"
                   >
-                    <img
-                      src={offer.image}
-                      alt={offer.title}
-                      className="w-full aspect-[16/9] object-cover"
-                      loading="eager"
-                      decoding="sync"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
-                      <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                        <h3 className="text-3xl font-bold mb-2">{offer.title}</h3>
-                        <p className="text-lg mb-2">{offer.description}</p>
-                        <ul className="mb-4">
-                          {offer.features.map((feature, idx) => (
-                            <li key={idx} className="text-sm">• {feature}</li>
-                          ))}
-                        </ul>
-                        <p className="text-2xl font-bold">{offer.price}</p>
+                    <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+                      <div className="flex flex-col md:flex-row">
+                        {/* Left side - Icon and price */}
+                        <div className="w-full md:w-1/3 bg-gradient-to-br from-rose-50 to-purple-50 p-8 flex flex-col justify-center items-center text-center">
+                          <div className="rounded-full bg-white p-6 shadow-md mb-6">
+                            {getIconComponent(offer.icon)}
+                          </div>
+                          <h3 className="text-3xl font-bold mb-2">{offer.title}</h3>
+                          <p className="text-2xl font-light text-gray-800">{offer.price}</p>
+                        </div>
+                        
+                        {/* Right side - Content */}
+                        <div className="w-full md:w-2/3 p-8">
+                          <p className="text-xl mb-6 text-gray-600">{offer.description}</p>
+                          <div className="border-t border-gray-100 pt-6">
+                            <h4 className="font-medium text-gray-900 mb-4">Features:</h4>
+                            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              {offer.features.map((feature, idx) => (
+                                <li key={idx} className="flex items-center">
+                                  <span className="mr-2 text-pink-500">•</span>
+                                  <span>{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div className="mt-8">
+                            <button className="px-8 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors">
+                              Book Appointment
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
@@ -141,8 +140,24 @@ const OffersCarousel = () => {
               ))}
             </AnimatePresence>
           </CarouselContent>
-          <CarouselPrevious className="left-4" />
-          <CarouselNext className="right-4" />
+          <div className="flex justify-center mt-8 gap-4">
+            <CarouselPrevious className="relative inset-0 translate-y-0 bg-black text-white hover:bg-gray-800 hover:text-white" />
+            <div className="flex space-x-2 items-center">
+              {offers.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActiveIndex(index)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    index === activeIndex 
+                      ? "bg-black w-6" 
+                      : "bg-gray-300 hover:bg-gray-400"
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+            <CarouselNext className="relative inset-0 translate-y-0 bg-black text-white hover:bg-gray-800 hover:text-white" />
+          </div>
         </Carousel>
       </div>
     </div>
