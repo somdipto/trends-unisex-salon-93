@@ -1,17 +1,31 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import OfferCard from "./offers/OfferCard";
+import CarouselDots from "./offers/CarouselDots";
 import { offers } from "./offers/offersData";
-import { motion } from "framer-motion";
 
 const ExclusiveOffers = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect device size
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Progressive image loading strategy
   useEffect(() => {
     let isMounted = true;
     
-    // Load all images
-    const allImages = offers.map(offer => {
+    // First load only the images we need to display initially
+    const initialImages = offers.slice(0, 3).map(offer => {
       return new Promise<void>((resolve) => {
         const img = new Image();
         img.src = offer.image;
@@ -20,10 +34,18 @@ const ExclusiveOffers = () => {
       });
     });
 
-    Promise.all(allImages)
+    Promise.all(initialImages)
       .then(() => {
         if (isMounted) {
           setImagesLoaded(true);
+          
+          // Then load the remaining images in the background
+          setTimeout(() => {
+            offers.slice(3).forEach((offer) => {
+              const img = new Image();
+              img.src = offer.image;
+            });
+          }, 1000); // Delay loading of remaining images
         }
       })
       .catch(() => {
@@ -38,6 +60,24 @@ const ExclusiveOffers = () => {
     };
   }, []);
 
+  // Auto-rotate carousel
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % offers.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Handle dot click
+  const handleDotClick = useCallback((index: number) => {
+    setActiveIndex(index);
+  }, []);
+
+  // Filter offers to only show current and adjacent offers for better performance
+  const visibleOffers = useMemo(() => {
+    return offers.filter((_, index) => Math.abs(index - activeIndex) <= 1);
+  }, [activeIndex]);
+
   // Loading placeholder
   if (!imagesLoaded) {
     return (
@@ -48,63 +88,38 @@ const ExclusiveOffers = () => {
   }
 
   return (
-    <div className="py-8 md:py-16 bg-gradient-to-b from-white to-gray-50">
-      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="py-8 md:py-16 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
+      <div className="max-w-[1920px] mx-auto">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-3xl md:text-5xl font-serif mb-4">Our Offers</h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          {offers.map((offer, index) => (
-            <motion.div
-              key={offer.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ 
-                duration: 0.5, 
-                delay: index * 0.1,
-                type: "spring",
-                stiffness: 100
-              }}
-              whileHover={{ 
-                scale: 1.05,
-                transition: { duration: 0.2 }
-              }}
-              className="group cursor-pointer"
-            >
-              <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="relative aspect-square overflow-hidden">
-                  <img
-                    src={offer.image}
-                    alt={offer.title.toString()}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    loading="lazy"
+        <div className="relative h-[400px] md:h-[500px] w-full">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="flex items-center justify-center w-full">
+              {visibleOffers.map((offer, index) => {
+                const position = offers.indexOf(offer) - activeIndex;
+                return (
+                  <OfferCard
+                    key={offer.id}
+                    title={offer.title.toString()}
+                    price={offer.price}
+                    image={offer.image}
+                    isActive={offers.indexOf(offer) === activeIndex}
+                    position={position}
+                    onClick={() => setActiveIndex(offers.indexOf(offer))}
                   />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300" />
-                </div>
-                
-                <div className="p-6">
-                  <div className="text-center">
-                    <h3 className="text-xl font-semibold mb-2 text-gray-900">
-                      {offer.title}
-                    </h3>
-                    <p className="text-2xl font-bold text-pink-600 mb-4">
-                      {offer.price}
-                    </p>
-                    <a 
-                      href={`https://wa.me/+919071331124?text=Hi, I'm interested in the ${offer.title} offer for ${offer.price}. Can I book an appointment?`}
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-block px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors duration-200 font-medium"
-                    >
-                      Book Now
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+                );
+              })}
+            </div>
+          </div>
         </div>
+
+        <CarouselDots
+          total={offers.length}
+          activeIndex={activeIndex}
+          onDotClick={handleDotClick}
+        />
       </div>
     </div>
   );
