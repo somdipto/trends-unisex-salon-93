@@ -95,23 +95,21 @@ const ExclusiveOffers = () => {
         </div>
 
         <div className="relative h-[400px] md:h-[500px] w-full">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="flex items-center justify-center w-full">
-              {visibleOffers.map((offer, index) => {
-                const position = offers.indexOf(offer) - activeIndex;
-                return (
-                  <OfferCard
-                    key={offer.id}
-                    title={offer.title.toString()}
-                    price={offer.price}
-                    image={offer.image}
-                    isActive={offers.indexOf(offer) === activeIndex}
-                    position={position}
-                    onClick={() => setActiveIndex(offers.indexOf(offer))}
-                  />
-                );
-              })}
-            </div>
+          <div className="flex items-center justify-center w-full h-full">
+            {visibleOffers.map((offer, index) => {
+              const position = offers.indexOf(offer) - activeIndex;
+              return (
+                <OfferCard
+                  key={offer.id}
+                  title={offer.title.toString()}
+                  price={offer.price}
+                  image={offer.image}
+                  isActive={offers.indexOf(offer) === activeIndex}
+                  position={position}
+                  onClick={() => setActiveIndex(offers.indexOf(offer))}
+                />
+              );
+            })}
           </div>
         </div>
 
