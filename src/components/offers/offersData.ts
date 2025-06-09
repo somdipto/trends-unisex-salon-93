@@ -13,12 +13,6 @@ export const offers = [
     image: "/lovable-uploads/9651bd69-8c97-469b-9a0f-dae1ce0c6328.png"
   },
   {
-    id: 3,
-    title: "Hydra Glow",
-    price: "₹1999",
-    image: "/lovable-uploads/7a27304e-c7da-44d1-8dbc-13700c1fdb66.png"
-  },
-  {
     id: 4,
     title: "Hair Botox",
     price: "₹4499",
@@ -43,4 +37,3 @@ export const offers = [
     image: "/lovable-uploads/3c08fed0-16c0-4442-88eb-1c05978fe4db.png"
   }
 ];
-
