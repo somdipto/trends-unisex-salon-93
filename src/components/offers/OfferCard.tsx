@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 interface OfferCardProps {
   title: string;
@@ -17,10 +17,8 @@ const OfferCard = ({
   position,
   onClick
 }: OfferCardProps) => {
-  // Use a fixed color palette instead of extracting from images
-  const [dominantColor, setDominantColor] = useState<string>('rgba(0, 0, 0, 0.1)');
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const imgRef = useRef<HTMLImageElement>(null);
   
   // Use useMemo to determine if the card should be visible
   const isVisible = useMemo(() => Math.abs(position) <= 1, [position]);
@@ -36,24 +34,6 @@ const OfferCard = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Use predefined color palette based on position instead of color extraction
-  useEffect(() => {
-    if (!isVisible) return;
-    
-    // Create a simple palette of semi-transparent colors
-    const colors = [
-      'rgba(66, 135, 245, 0.3)',   // blue
-      'rgba(245, 157, 66, 0.3)',   // orange
-      'rgba(66, 245, 108, 0.3)',   // green
-      'rgba(245, 66, 87, 0.3)',    // red
-      'rgba(194, 66, 245, 0.3)',   // purple
-    ];
-    
-    // Use position to select color from palette, handle negative positions
-    const colorIndex = Math.abs(position) % colors.length;
-    setDominantColor(colors[colorIndex]);
-  }, [image, isVisible, position]);
-
   // Calculate card size based on device
   const cardSize = useMemo(() => {
     return isMobile ? {
@@ -65,8 +45,11 @@ const OfferCard = ({
     };
   }, [isMobile]);
 
-  // Don't render if not visible, but do this after all hooks are called
+  // Don't render if not visible
   if (!isVisible) return null;
+
+  // Optimized shadow color without complex calculations
+  const shadowColor = isActive ? 'rgba(0, 0, 0, 0.25)' : 'rgba(0, 0, 0, 0.15)';
 
   return (
     <motion.div
@@ -86,28 +69,36 @@ const OfferCard = ({
       onClick={onClick}
     >
       <motion.div
-        className="overflow-hidden rounded-2xl transition-shadow duration-500"
+        className="overflow-hidden rounded-2xl transition-shadow duration-300"
         style={{
           width: cardSize.width,
           height: cardSize.height,
-          transformStyle: "preserve-3d",
-          perspective: "1000px",
           boxShadow: isActive
-            ? `0 20px 25px -5px ${dominantColor}, 0 8px 10px -6px ${dominantColor}`
-            : `0 10px 15px -3px ${dominantColor}, 0 4px 6px -4px ${dominantColor}`
+            ? `0 20px 25px -5px ${shadowColor}, 0 8px 10px -6px ${shadowColor}`
+            : `0 10px 15px -3px ${shadowColor}, 0 4px 6px -4px ${shadowColor}`
         }}
         whileHover={{
           scale: 1.02
         }}
       >
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full bg-gray-100">
+          {/* Loading placeholder */}
+          {!imageLoaded && (
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse" />
+          )}
+          
+          {/* Optimized image with better loading */}
           <img
-            ref={imgRef}
             src={image}
             alt="Offer"
-            loading="eager"
+            loading={isActive ? "eager" : "lazy"}
             decoding="async"
-            className="w-full h-full object-cover"
+            fetchPriority={isActive ? "high" : "low"}
+            className={`w-full h-full object-cover transition-opacity duration-300 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            onLoad={() => setImageLoaded(true)}
+            onError={() => setImageLoaded(true)} // Show placeholder on error
           />
         </div>
       </motion.div>

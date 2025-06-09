@@ -6,7 +6,6 @@ import { offers } from "./offers/offersData";
 
 const ExclusiveOffers = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   // Detect device size
@@ -20,51 +19,11 @@ const ExclusiveOffers = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Progressive image loading strategy
-  useEffect(() => {
-    let isMounted = true;
-    
-    // First load only the images we need to display initially
-    const initialImages = offers.slice(0, 3).map(offer => {
-      return new Promise<void>((resolve) => {
-        const img = new Image();
-        img.src = offer.image;
-        img.onload = () => resolve();
-        img.onerror = () => resolve(); // Still resolve on error to avoid hanging
-      });
-    });
-
-    Promise.all(initialImages)
-      .then(() => {
-        if (isMounted) {
-          setImagesLoaded(true);
-          
-          // Then load the remaining images in the background
-          setTimeout(() => {
-            offers.slice(3).forEach((offer) => {
-              const img = new Image();
-              img.src = offer.image;
-            });
-          }, 1000); // Delay loading of remaining images
-        }
-      })
-      .catch(() => {
-        if (isMounted) {
-          // Ensure we still show the component even if image loading fails
-          setImagesLoaded(true);
-        }
-      });
-      
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  // Auto-rotate carousel
+  // Auto-rotate carousel with reduced frequency for better performance
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % offers.length);
-    }, 5000);
+    }, 4000); // Reduced from 5000ms to 4000ms
     return () => clearInterval(timer);
   }, []);
 
@@ -73,19 +32,22 @@ const ExclusiveOffers = () => {
     setActiveIndex(index);
   }, []);
 
-  // Filter offers to only show current and adjacent offers for better performance
+  // Only render visible offers for better performance
   const visibleOffers = useMemo(() => {
-    return offers.filter((_, index) => Math.abs(index - activeIndex) <= 1);
+    const getVisibleIndexes = () => {
+      const indexes = [];
+      for (let i = -1; i <= 1; i++) {
+        const index = (activeIndex + i + offers.length) % offers.length;
+        indexes.push(index);
+      }
+      return indexes;
+    };
+    
+    return getVisibleIndexes().map(index => ({
+      ...offers[index],
+      originalIndex: index
+    }));
   }, [activeIndex]);
-
-  // Loading placeholder
-  if (!imagesLoaded) {
-    return (
-      <div className="h-[600px] md:h-[600px] flex items-center justify-center">
-        <div className="animate-pulse bg-gray-200 w-[300px] md:w-[400px] h-[300px] md:h-[400px] rounded-2xl"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="py-8 md:py-16 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
@@ -96,17 +58,17 @@ const ExclusiveOffers = () => {
 
         <div className="relative h-[400px] md:h-[500px] w-full">
           <div className="flex items-center justify-center w-full h-full">
-            {visibleOffers.map((offer, index) => {
-              const position = offers.indexOf(offer) - activeIndex;
+            {visibleOffers.map((offer) => {
+              const position = offer.originalIndex - activeIndex;
               return (
                 <OfferCard
-                  key={offer.id}
+                  key={offer.originalIndex}
                   title={offer.title.toString()}
                   price={offer.price}
                   image={offer.image}
-                  isActive={offers.indexOf(offer) === activeIndex}
+                  isActive={offer.originalIndex === activeIndex}
                   position={position}
-                  onClick={() => setActiveIndex(offers.indexOf(offer))}
+                  onClick={() => setActiveIndex(offer.originalIndex)}
                 />
               );
             })}

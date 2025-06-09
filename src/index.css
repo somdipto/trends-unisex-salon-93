@@ -24,6 +24,14 @@
   img.hero-image {
     content-visibility: auto;
   }
+
+  /* Optimize image rendering performance */
+  img {
+    image-rendering: optimizeQuality;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: transform;
+  }
 }
 
 @layer utilities {
@@ -62,6 +70,17 @@
   
   .blur-up.lazyloaded {
     filter: blur(0);
+  }
+
+  /* Performance optimizations for carousel */
+  .carousel-container {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  .offer-card {
+    transform: translateZ(0);
+    will-change: transform, opacity;
   }
 }
 
