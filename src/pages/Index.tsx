@@ -5,6 +5,7 @@ import ServicesMenu from "@/components/ServicesMenu";
 import ExclusiveOffers from "@/components/ExclusiveOffers";
 import Navbar from "@/components/Navbar";
 import FloatingOffer from "@/components/FloatingOffer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { Toaster } from "@/components/ui/toaster";
 
 // Import OffersCarousel directly instead of using lazy loading
@@ -15,7 +16,6 @@ import OffersCarousel from "@/components/OffersCarousel";
 const LocationMap = lazy(() => import("@/components/LocationMap"));
 const Testimonials = lazy(() => import("@/components/Testimonials"));
 const Footer = lazy(() => import("@/components/Footer"));
-const WhatsAppButton = lazy(() => import("@/components/WhatsAppButton"));
 
 // Memoize the main content to prevent unnecessary re-renders
 const MainContent = memo(() => {
@@ -47,9 +47,7 @@ const Index = () => {
       <Hero />
       <FloatingOffer />
       <MainContent />
-      <Suspense fallback={null}>
-        <WhatsAppButton />
-      </Suspense>
+      <WhatsAppButton />
       <Toaster />
     </div>
   );
