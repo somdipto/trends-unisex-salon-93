@@ -1,29 +1,23 @@
 
-import { useState, useEffect, useCallback, useMemo } from "react";
-import OfferCard from "./offers/OfferCard";
+import { useState, useEffect, useCallback } from "react";
 import CarouselDots from "./offers/CarouselDots";
-import { offers } from "./offers/offersData";
+import Offer1 from "./offers/Offer1";
+import Offer2 from "./offers/Offer2";
+import Offer3 from "./offers/Offer3";
+import Offer4 from "./offers/Offer4";
+import Offer5 from "./offers/Offer5";
+import Offer6 from "./offers/Offer6";
+import Offer7 from "./offers/Offer7";
 
 const ExclusiveOffers = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
+  const totalOffers = 7;
 
-  // Detect device size
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Auto-rotate carousel with reduced frequency for better performance
+  // Auto-rotate carousel
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % offers.length);
-    }, 4000); // Reduced from 5000ms to 4000ms
+      setActiveIndex((prev) => (prev + 1) % totalOffers);
+    }, 4000);
     return () => clearInterval(timer);
   }, []);
 
@@ -32,22 +26,16 @@ const ExclusiveOffers = () => {
     setActiveIndex(index);
   }, []);
 
-  // Only render visible offers for better performance
-  const visibleOffers = useMemo(() => {
-    const getVisibleIndexes = () => {
-      const indexes = [];
-      for (let i = -1; i <= 1; i++) {
-        const index = (activeIndex + i + offers.length) % offers.length;
-        indexes.push(index);
-      }
-      return indexes;
-    };
-    
-    return getVisibleIndexes().map(index => ({
-      ...offers[index],
-      originalIndex: index
-    }));
-  }, [activeIndex]);
+  // Individual offer components array for easier management
+  const offers = [
+    { id: 1, Component: Offer1 },
+    { id: 2, Component: Offer2 },
+    { id: 3, Component: Offer3 },
+    { id: 4, Component: Offer4 },
+    { id: 5, Component: Offer5 },
+    { id: 6, Component: Offer6 },
+    { id: 7, Component: Offer7 }
+  ];
 
   return (
     <div className="py-8 md:py-16 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
@@ -58,17 +46,18 @@ const ExclusiveOffers = () => {
 
         <div className="relative h-[400px] md:h-[500px] w-full">
           <div className="flex items-center justify-center w-full h-full">
-            {visibleOffers.map((offer) => {
-              const position = offer.originalIndex - activeIndex;
+            {offers.map(({ id, Component }, index) => {
+              const position = index - activeIndex;
+              const isVisible = Math.abs(position) <= 1;
+              
+              if (!isVisible) return null;
+              
               return (
-                <OfferCard
-                  key={offer.originalIndex}
-                  title={offer.title.toString()}
-                  price={offer.price}
-                  image={offer.image}
-                  isActive={offer.originalIndex === activeIndex}
+                <Component
+                  key={id}
+                  isActive={index === activeIndex}
                   position={position}
-                  onClick={() => setActiveIndex(offer.originalIndex)}
+                  onClick={() => setActiveIndex(index)}
                 />
               );
             })}
@@ -76,7 +65,7 @@ const ExclusiveOffers = () => {
         </div>
 
         <CarouselDots
-          total={offers.length}
+          total={totalOffers}
           activeIndex={activeIndex}
           onDotClick={handleDotClick}
         />
