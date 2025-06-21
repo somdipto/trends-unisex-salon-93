@@ -28,7 +28,7 @@ const OffersCarousel = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-12 md:mb-16">
-          <span className="inline-flex items-center px-6 py-2 bg-rose-100 text-rose-700 rounded-full text-sm font-semibold mb-4">
+          <span className="inline-flex items-center px-6 py-2 bg-rose-100 rounded-full text-sm font-semibold mb-4 text-[#d77100]">
             <Sparkles className="w-4 h-4 mr-2" />
             Exclusive Premium Offer
             <Award className="w-4 h-4 ml-2" />
