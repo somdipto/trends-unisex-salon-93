@@ -9,7 +9,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { Toaster } from "@/components/ui/toaster";
 
 // Import OffersCarousel directly instead of using lazy loading
-import OffersCarousel from "@/components/OffersCarousel";
+import OffersCarousel, { ErrorBoundary } from "@/components/OffersCarousel";
 
 // Lazy load components that are not immediately visible
 // Use default import format to ensure compatibility
@@ -23,8 +23,10 @@ const MainContent = memo(() => {
     <div className="relative z-0 space-y-16">
       <ServicesMenu />
       <ExclusiveOffers />
-      {/* Use OffersCarousel directly without Suspense since it's imported normally */}
-      <OffersCarousel />
+      {/* Wrap OffersCarousel with ErrorBoundary */}
+      <ErrorBoundary>
+        <OffersCarousel />
+      </ErrorBoundary>
       <Suspense fallback={<div className="h-64 w-full bg-gray-100 animate-pulse rounded-lg" />}>
         <LocationMap />
       </Suspense>

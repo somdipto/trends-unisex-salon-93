@@ -93,7 +93,7 @@ const OfferCard = ({
             alt="Offer"
             loading={isActive ? "eager" : "lazy"}
             decoding="async"
-            fetchPriority={isActive ? "high" : "low"}
+            {...(isActive ? { 'data-fetchpriority': 'high' } : { 'data-fetchpriority': 'low' })}
             className={`w-full h-full object-cover transition-opacity duration-300 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
