@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { Scissors, Award, Sparkles, Star } from 'lucide-react';
 
-// Using a landscape image from Unsplash
-const salonImage = 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&h=600&q=80';
+// Using the uploaded salon image
+const salonImage = '/lovable-uploads/73f8ad3e-25d3-4b88-98ce-f553e68cb184.png';
 
 interface Offer {
   id: string;
@@ -59,15 +60,14 @@ const OffersCarousel = () => {
         {/* Offer Card */}
         <div className="relative max-w-5xl mx-auto">
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
-            {/* Image Section - Always on top */}
+            {/* Image Section - Separate div */}
             <div className="w-full h-80 md:h-96 relative overflow-hidden">
               <img 
                 src={salonImage} 
-                alt="Premium Hair Styling"
+                alt="Premium Hair Styling Salon"
                 className="w-full h-full object-cover object-center"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-black/20"></div>
               
               {/* Simple rating badge */}
               <div className="absolute top-4 right-4 bg-white/95 rounded-xl p-3 shadow-md">
@@ -85,7 +85,7 @@ const OffersCarousel = () => {
               </div>
             </div>
             
-            {/* Content Section - Always below image */}
+            {/* Content Section - Separate div */}
             <div className="w-full p-8 md:p-10 lg:p-12">
               <div className="mb-6">
                 <div className="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mb-4">
