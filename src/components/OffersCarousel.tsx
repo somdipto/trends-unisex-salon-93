@@ -1,10 +1,8 @@
-
 import React from 'react';
 import { Scissors, Award, Sparkles, Star } from 'lucide-react';
 
 // Using the uploaded salon image
 const salonImage = '/lovable-uploads/73f8ad3e-25d3-4b88-98ce-f553e68cb184.png';
-
 interface Offer {
   id: string;
   title: string;
@@ -13,25 +11,17 @@ interface Offer {
   price: string;
   highlight?: string;
 }
-
 const OffersCarousel = () => {
   // Single offer data
   const offer = {
     id: "premium-styling",
     title: "Premium Hair Styling",
     description: "Experience our signature hair styling service that combines modern techniques with premium products for a look that lasts.",
-    features: [
-      "Expert stylist consultation",
-      "Customized hair treatment", 
-      "Professional blowout & styling",
-      "Complimentary hair care tips"
-    ],
+    features: ["Expert stylist consultation", "Customized hair treatment", "Professional blowout & styling", "Complimentary hair care tips"],
     price: "Starting from ₹999",
     highlight: "Limited Time Offer"
   };
-
-  return (
-    <section className="relative py-16 md:py-20 overflow-hidden">
+  return <section className="relative py-16 md:py-20 overflow-hidden">
       {/* Simple Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-rose-50 to-purple-50"></div>
 
@@ -46,7 +36,7 @@ const OffersCarousel = () => {
           
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4 leading-tight">
             Transform Your 
-            <span className="block text-rose-600">
+            <span className="block text-[#b09170]">
               Beauty Experience
             </span>
           </h2>
@@ -62,19 +52,12 @@ const OffersCarousel = () => {
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
             {/* Image Section - Separate div */}
             <div className="w-full h-80 md:h-96 relative overflow-hidden">
-              <img 
-                src={salonImage} 
-                alt="Premium Hair Styling Salon"
-                className="w-full h-full object-cover object-center"
-                loading="lazy"
-              />
+              <img src={salonImage} alt="Premium Hair Styling Salon" className="w-full h-full object-cover object-center" loading="lazy" />
               
               {/* Simple rating badge */}
               <div className="absolute top-4 right-4 bg-white/95 rounded-xl p-3 shadow-md">
                 <div className="flex items-center space-x-1 mb-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 text-yellow-400 fill-current" />
-                  ))}
+                  {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 text-yellow-400 fill-current" />)}
                 </div>
                 <p className="text-xs font-semibold text-gray-700">5.0 Rating</p>
               </div>
@@ -107,14 +90,12 @@ const OffersCarousel = () => {
                   What's Included
                 </h4>
                 <ul className="space-y-3">
-                  {offer.features.map((feature, index) => (
-                    <li key={index} className="flex items-center">
+                  {offer.features.map((feature, index) => <li key={index} className="flex items-center">
                       <div className="flex-shrink-0 w-5 h-5 bg-rose-400 rounded-full flex items-center justify-center mr-3">
                         <span className="w-2 h-2 bg-white rounded-full"></span>
                       </div>
                       <span className="text-gray-700">{feature}</span>
-                    </li>
-                  ))}
+                    </li>)}
                 </ul>
               </div>
               
@@ -123,30 +104,21 @@ const OffersCarousel = () => {
                   {offer.price}
                 </div>
                 
-                <a
-                  href="https://wa.me/919987654321?text=Hi%20Trends%20Unisex%20Salon%2C%20I'd%20like%20to%20book%20an%20appointment"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-8 py-3 bg-rose-500 hover:bg-rose-600 text-white rounded-xl font-semibold text-center shadow-md hover:shadow-lg transition-all duration-200"
-                >
+                <a href="https://wa.me/919987654321?text=Hi%20Trends%20Unisex%20Salon%2C%20I'd%20like%20to%20book%20an%20appointment" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto px-8 py-3 bg-rose-500 hover:bg-rose-600 text-white rounded-xl font-semibold text-center shadow-md hover:shadow-lg transition-all duration-200">
                   Book Now on WhatsApp
                 </a>
               </div>
               
-              {offer.highlight && (
-                <div className="mt-4 flex justify-center sm:justify-end">
+              {offer.highlight && <div className="mt-4 flex justify-center sm:justify-end">
                   <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-rose-100 text-rose-700">
                     <Sparkles className="w-4 h-4 mr-2" />
                     {offer.highlight}
                   </span>
-                </div>
-              )}
+                </div>}
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default OffersCarousel;
