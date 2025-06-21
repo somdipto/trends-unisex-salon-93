@@ -2,8 +2,8 @@
 import React from 'react';
 import { Scissors, Award, Sparkles, Star } from 'lucide-react';
 
-// Using a placeholder image from a CDN
-const salonImage = 'https://images.unsplash.com/photo-1605497788044-5a32c7078486?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80';
+// Using a landscape image from Unsplash
+const salonImage = 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&h=600&q=80';
 
 interface Offer {
   id: string;
